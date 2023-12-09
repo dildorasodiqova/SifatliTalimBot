@@ -7,7 +7,6 @@ function check() {
             count++;
         }
     }
-
     document.getElementById('head-user-check').checked = count === elements.length;
 
 }
