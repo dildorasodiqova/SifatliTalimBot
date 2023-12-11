@@ -67,6 +67,8 @@ public class UserServiceImpl implements UserService {
       return list;
        }
     private UsersEntity parse(UserCreateDto dto){
-        return new UsersEntity(dto);
+//        return new UsersEntity(dto);
+        return null;
+        // todo
     }
 }

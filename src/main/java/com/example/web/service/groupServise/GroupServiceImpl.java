@@ -50,7 +50,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private GroupResponseDto parse(GroupEntity group){
-        return new GroupResponseDto(group);
+//        return new GroupResponseDto(group);
+        return null;
     }
     private List<GroupResponseDto> parse(List<GroupEntity> group){
         List<GroupResponseDto> list = new ArrayList<>();
@@ -61,6 +62,8 @@ public class GroupServiceImpl implements GroupService {
         return list;
     }
     private GroupEntity parse(GroupCreateDto group){
-        return new GroupEntity(group);
+//        return new GroupEntity(group);
+        return null;
+        // todo
     }
 }
