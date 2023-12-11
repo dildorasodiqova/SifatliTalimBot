@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,17 +22,7 @@ public class UserServiceImpl implements UserService {
     private final UsersRepository userRepository;
 
     @Override
-    public UserResponseDto create(UserCreateDto dto) {
-        if (userRepository.existsAllByPhone(dto.getPhone())){
-            throw new DataAlreadyExistsException("This phone number already exists !");
-        }
-        UsersEntity parse = parse(dto);
-        userRepository.save(parse);
-        return parse(parse);
-    }
-
-    @Override
-    public List<UserResponseDto> getAll(Integer page, Integer size) {
+    public List<UserResponseDto> getAll(Integer page, Integer size, String query) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<UsersEntity> roadPage = userRepository.findAllByIsActiveTrue(pageRequest);
         List<UsersEntity> content = roadPage.getContent();
@@ -55,20 +46,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.updateActiveALL(trueOrFalse);
     }
 
-    private UserResponseDto parse(UsersEntity entity){
-        return new UserResponseDto(entity.getUserId(), entity.getName(), entity.getSurname(), entity.getPhone(), entity.getPaidUntil());
+    private UserResponseDto parse(UsersEntity entity) {
+        return new UserResponseDto(entity.getUserId(), entity.getName(), entity.getSurname(), entity.getPhone(), entity.getPaidUntil(), entity.getIsActive());
     }
 
-    private List<UserResponseDto> parse(List<UsersEntity> entities){
-        List<UserResponseDto> list = new ArrayList<>();
-        for (UsersEntity entity : entities) {
-            list.add(new UserResponseDto(entity.getUserId(), entity.getName(), entity.getSurname(), entity.getPhone(), entity.getPaidUntil()));
-        }
-      return list;
-       }
-    private UsersEntity parse(UserCreateDto dto){
-//        return new UsersEntity(dto);
-        return null;
-        // todo
+    private List<UserResponseDto> parse(List<UsersEntity> entities) {
+        return entities.stream().map(this::parse).toList();
     }
+
 }

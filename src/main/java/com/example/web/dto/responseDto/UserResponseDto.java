@@ -17,4 +17,5 @@ public class UserResponseDto {
     private String surname;
     private String phone;
     private LocalDate paidUntil;
+    private Boolean isActive = false;
 }

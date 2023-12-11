@@ -7,9 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 
 
 @AllArgsConstructor
@@ -28,4 +29,7 @@ public class UsersEntity {
     private String phone;
 
     private LocalDate paidUntil; // qachongacha tolov qilgani
+
+    @CreatedDate
+    private LocalDateTime createdDate;
 }

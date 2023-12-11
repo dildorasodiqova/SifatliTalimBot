@@ -34,6 +34,5 @@ public class GroupController {
         GroupResponseDto byId = groupService.findById(groupId);
         model.addAttribute("group", byId);
         return "";
-
     }
 }
