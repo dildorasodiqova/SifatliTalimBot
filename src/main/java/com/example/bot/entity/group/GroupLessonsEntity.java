@@ -46,4 +46,15 @@ public class GroupLessonsEntity extends BaseStringEntity {
 
     @Enumerated(EnumType.STRING)
     private DayOfWeek sendDay; // MONDAY
+
+    public GroupLessonsEntity(Long groupId, String mediaId, LessonMediaType mediaType, String text, TextType textType, Integer orderNumber, LocalTime sendTime, DayOfWeek sendDay) {
+        this.groupId = groupId;
+        this.mediaId = mediaId;
+        this.mediaType = mediaType;
+        this.text = text;
+        this.textType = textType;
+        this.orderNumber = orderNumber;
+        this.sendTime = sendTime;
+        this.sendDay = sendDay;
+    }
 }

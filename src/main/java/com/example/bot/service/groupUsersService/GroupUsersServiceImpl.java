@@ -14,12 +14,15 @@ public class GroupUsersServiceImpl implements GroupUsersService{
     private final GroupUsersRepository groupUsersRepository;
     @Override
     public GroupUsersResponseDto add(GroupUsersCreateDto dto) {
-        return ;
+        // todo
+        return null;
     }
 
     @Override
     public GroupUsersResponseDto getById(Long groupId) {
-        return groupUsersRepository.findById();
+        // todo
+//        return groupUsersRepository.findById(groupId).orElse(null);
+        return null;
     }
 
     @Override

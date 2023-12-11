@@ -11,6 +11,6 @@ import java.util.List;
 public interface GroupService{
     GroupEntity getById(Long groupId);
     GroupResponseDto findById(Long groupId);
-    List<GroupResponseDto> getAll(Integer page, Integer size)
+    List<GroupResponseDto> getAll(Integer page, Integer size);
     GroupResponseDto create(GroupCreateDto dto);
 }

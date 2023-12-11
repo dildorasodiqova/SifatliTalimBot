@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class GroupLessonServiceImpl implements GroupLessonService {
     private final GroupLessonRepository groupLessonRepository;
     private final GroupService groupService;
+
     @Override
     public GroupLessonResponseDto add(GroupLessonCreateDto dto) {
         GroupLessonsEntity groupLessonsEntity = parse(dto);
@@ -28,12 +29,13 @@ public class GroupLessonServiceImpl implements GroupLessonService {
         return parse(groupLessonNotFound);
     }
 
-    private GroupLessonsEntity parse(GroupLessonCreateDto dto){
+    private GroupLessonsEntity parse(GroupLessonCreateDto dto) {
         GroupEntity group = groupService.getById(dto.getGroupId());
-        return new GroupLessonsEntity(1L, group, );
+        //todo write parse
+        return new GroupLessonsEntity();
     }
 
-    private GroupLessonResponseDto parse(GroupLessonsEntity entity){
+    private GroupLessonResponseDto parse(GroupLessonsEntity entity) {
         return new GroupLessonResponseDto(entity.getGroupId(),
                 entity.getMediaId(),
                 entity.getText(),
