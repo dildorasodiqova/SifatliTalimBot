@@ -22,3 +22,8 @@ function checkAllUsers() {
 function unCheckAllUsers() {
 
 }
+
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})

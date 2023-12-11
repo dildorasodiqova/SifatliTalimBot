@@ -88,6 +88,7 @@
                         <th>Familyasi</th>
                         <th>Raqam</th>
                         <th>Tolov sanasi</th>
+                        <th>Actions</th>
                     </tr>
                     <th:block th:each="user : ${userList}">
                         <tr>
@@ -103,7 +104,19 @@
                             <td th:text="${user.userId}"></td>
                             <td th:text="${user.name}"></td>
                             <td th:text="${user.surname}"></td>
+                            <td th:text="${user.phone}"></td>
                             <td th:text="${user.paidUntil}"></td>
+                            <td>
+                                <form>
+                                    <button class="btn btn-warning"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Userni active yoki block qilish"
+                                    >
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     </th:block>
                 </table>
