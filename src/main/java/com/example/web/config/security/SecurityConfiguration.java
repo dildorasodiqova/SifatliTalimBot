@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                         .loginPage("/auth/go/login")
                         .loginProcessingUrl("/auth/login")
                         .failureUrl("/auth/go/login?error=true")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/dashboard", true)
                         .permitAll()
                 );
         http

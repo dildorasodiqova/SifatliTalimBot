@@ -8,42 +8,45 @@
     <link rel="stylesheet" href="/static/css/auth/login.css" th:href="@{/css/auth/login.css}">
     <link rel="stylesheet" href="/static/css/base.css" th:href="@{/css/base.css}">
 </head>
-<body>
+<body class="background-style">
 <div class="container">
     <div class="mt-5 w-100">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <h2 class="mb-4">Sifatli Ta'lim Login</h2>
-                <form id="loginForm"
-                      action="#"
-                      th:action="@{/auth/login}"
-                      method="post"
-                      th:object="${loginModel}"
-                >
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="username"
-                                name="username"
-                                placeholder="Username kiriting...."
-                                th:field="*{username}"
-                                required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input
-                                type="password"
-                                class="form-control"
-                                id="password"
-                                name="password"
-                                placeholder="Parol kiriting..."
-                                th:field="*{password}"
-                                required>
-                    </div>
-                    <button type="submit" class="custom-btn btn-2">Login</button>
-                </form>
+                <div class="login-form">
+                    <h2 class="mb-4 text-center">Sifatli Ta'lim Login</h2>
+                    <form id="loginForm"
+                          action="#"
+                          th:action="@{/auth/login}"
+                          method="post"
+                          th:object="${loginModel}"
+                    >
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="username"
+                                    name="username"
+                                    placeholder="Username kiriting...."
+                                    th:field="*{username}"
+                                    required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input
+                                    type="password"
+                                    class="form-control"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Parol kiriting..."
+                                    th:field="*{password}"
+                                    required>
+                        </div>
+                        <button type="submit" class="custom-btn btn-2">Login</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
