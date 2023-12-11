@@ -57,7 +57,7 @@
                 <p>Userlar ro'yhati</p>
                 <hr/>
                 <div>
-                    <form>
+                    <form method="get">
                         <label>
                             <input
                                     type="text"
@@ -85,64 +85,27 @@
                         </td>
                         <th>Id</th>
                         <th>Ismi</th>
+                        <th>Familyasi</th>
                         <th>Raqam</th>
                         <th>Tolov sanasi</th>
                     </tr>
-                    <tr>
-                        <td>
-                            <input id="1" type="checkbox" name="user-check" class="user-check" onchange="check()">
-                        </td>
-                        <td>1</td>
-                        <td>Maria Anders</td>
-                        <td>Germany</td>
-                        <td>07.12.2023</td>
-                    </tr>
-                    <tr>
-
-                        <td>
-                            <input id="2" type="checkbox" name="user-check" class="user-check" onchange="check()">
-                        </td>
-                        <td>2</td>
-                        <td>Francisco Chang</td>
-                        <td>Mexico</td>
-                        <td>07.12.2023</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="3" type="checkbox" name="user-check" class="user-check" onchange="check()">
-                        </td>
-                        <td>3</td>
-                        <td>Roland Mendel</td>
-                        <td>Austria</td>
-                        <td>07.12.2023</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="4" type="checkbox" name="user-check" class="user-check" onchange="check()">
-                        </td>
-                        <td>4</td>
-                        <td>Helen Bennett</td>
-                        <td>UK</td>
-                        <td>07.12.2023</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="5" type="checkbox" name="user-check" class="user-check" onchange="check()">
-                        </td>
-                        <td>5</td>
-                        <td>Yoshi Tannamuri</td>
-                        <td>Canada</td>
-                        <td>07.12.2023</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="6" type="checkbox" name="user-check" class="user-check" onchange="check()">
-                        </td>
-                        <td>6</td>
-                        <td>Giovanni Rovelli</td>
-                        <td>Italy</td>
-                        <td>07.12.2023</td>
-                    </tr>
+                    <th:block th:each="user : ${userList}">
+                        <tr>
+                            <td>
+                                <input
+                                        th:id="${user.userId}"
+                                        type="checkbox"
+                                        name="user-check"
+                                        class="user-check"
+                                        onchange="check()"
+                                >
+                            </td>
+                            <td th:text="${user.userId}"></td>
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.surname}"></td>
+                            <td th:text="${user.paidUntil}"></td>
+                        </tr>
+                    </th:block>
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
