@@ -1,1 +1,9 @@
-
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/quality_education
+    username: postgres
+    password: root1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
