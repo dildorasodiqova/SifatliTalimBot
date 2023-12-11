@@ -7,11 +7,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author 'Mukhtarov Sarvarbek' on 06.12.2023
- * @project sifatli_talim_bot
- * @contact @sarvargo
- */
 @Entity
 @Table(name = "profile")
 @Getter
@@ -22,7 +17,7 @@ public class ProfileEntity extends BaseLongEntity {
     private String fullName;
 
     @Column(nullable = false, name = "login")
-    private String login;
+    private String userName;
 
     @Column(nullable = false, name = "password")
     private String password;

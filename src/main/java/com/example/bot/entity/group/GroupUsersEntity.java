@@ -8,11 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * @author 'Mukhtarov Sarvarbek' on 09.12.2023
- * @project sifatli_talim_bot
- * @contact @sarvargo
- */
+
 @Entity
 @Table
 @Getter

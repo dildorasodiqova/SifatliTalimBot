@@ -1,8 +1,5 @@
-package com.example.bot.entity;
+package com.example.web.dto.responseDto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,22 +7,14 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "users")
-public class UsersEntity {
-    @Id
+public class UserResponseDto {
     private Long userId;
     private String name;
     private String surname;
-
-    private Boolean isActive = true;
     private String phone;
-
-    private LocalDate paidUntil; // qachongacha tolov qilgani
+    private LocalDate paidUntil;
 }

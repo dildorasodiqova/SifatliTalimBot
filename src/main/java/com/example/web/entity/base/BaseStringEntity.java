@@ -20,10 +20,13 @@ public class BaseStringEntity {
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
+
     @Column(name = "visible")
     private Boolean visible = Boolean.TRUE;
+
     @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
+
     @Column(name = "deleted_date")
     private LocalDateTime deletedDate;
 }

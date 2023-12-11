@@ -11,11 +11,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * @author 'Mukhtarov Sarvarbek' on 09.12.2023
- * @project sifatli_talim_bot
- * @contact @sarvargo
- */
 @Entity
 @Table
 @Getter

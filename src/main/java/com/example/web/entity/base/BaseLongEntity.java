@@ -15,8 +15,12 @@ public class BaseLongEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Boolean active;
+
     @Column(name = "visible")
     private Boolean visible = Boolean.TRUE;
+
     @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
 

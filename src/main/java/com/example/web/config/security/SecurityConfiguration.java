@@ -7,11 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * @author 'Mukhtarov Sarvarbek' on 05.12.2023
- * @project sifatli_talim_bot
- * @contact @sarvargo
- */
+
 @Configuration
 public class SecurityConfiguration {
 
