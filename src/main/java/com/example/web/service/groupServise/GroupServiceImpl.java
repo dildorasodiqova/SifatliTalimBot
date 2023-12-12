@@ -57,7 +57,8 @@ public class GroupServiceImpl implements GroupService {
         List<GroupResponseDto> list = new ArrayList<>();
         for (GroupEntity groupEntity : group) {
             Integer counted = groupUsersRepository.countAllByGroupId(groupEntity.getId());
-            list.add(new GroupResponseDto(groupEntity.getId(),groupEntity.getName(), groupEntity.getDescription(),counted,  groupEntity.getStartDate()));
+          //  shu yerda image urlni nima qilishim kk
+            list.add(new GroupResponseDto(groupEntity.getId(),groupEntity.getName(), groupEntity.getDescription(),counted,new String(),  groupEntity.getStartDate()));
         }
         return list;
     }
