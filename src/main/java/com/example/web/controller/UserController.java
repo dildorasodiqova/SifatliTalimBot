@@ -46,10 +46,4 @@ public class UserController {
         return "";
     }
 
-    @GetMapping("/byId/{userId}")
-    public String getById(@PathVariable Long userId, Model model) {
-        UserResponseDto byId = userService.getById(userId);
-        model.addAttribute("user", byId);
-        return "";
-    }
 }
