@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.dto.responseDto.UserStatisticsDTO;
 import com.example.web.service.userService.UserService;
 import org.junit.jupiter.api.Test;
@@ -22,9 +23,9 @@ class SifatliTalimBotApplicationTests {
 //        System.out.println(passwordEncoder.encode(
 //                "12345"
 //        ));
-        List<UserStatisticsDTO> statistic = userService.statistic();
-        for (UserStatisticsDTO userStatisticsDTO : statistic) {
-            System.out.println(userStatisticsDTO.toString());
+        List<UserResponseDto> list = userService.nonPayingUsers(0, 5);
+        for (UserResponseDto userResponseDto : list) {
+            System.out.println(userResponseDto.toString());
         }
 
     }
