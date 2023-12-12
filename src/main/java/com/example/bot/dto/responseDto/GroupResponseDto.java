@@ -16,6 +16,6 @@ public class GroupResponseDto {
     private String name;
     private String description;
     private Integer countOfStudents;
-//    private String imageId; // id is telegram media id
+    private String imageId; // id is telegram media id
     private LocalDate startDate;
 }

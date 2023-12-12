@@ -32,7 +32,7 @@ public class GroupLessonServiceImpl implements GroupLessonService {
     private GroupLessonsEntity parse(GroupLessonCreateDto dto) {
         GroupEntity group = groupService.getById(dto.getGroupId());
         //todo write parse
-        return new GroupLessonsEntity();
+        return new GroupLessonsEntity(group.getId(), group.getImageId(), group.);
     }
 
     private GroupLessonResponseDto parse(GroupLessonsEntity entity) {
