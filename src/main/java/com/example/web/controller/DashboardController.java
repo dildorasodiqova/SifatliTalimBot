@@ -18,6 +18,7 @@ public class DashboardController {
 
     @GetMapping("")
     public String dashboard(Model model){
+        // shu yerga
         return "dashboard/index";
     }
 }

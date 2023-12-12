@@ -1,10 +1,8 @@
 package com.example.web.controller;
 
-import com.example.web.dto.createdDto.UserCreateDto;
 import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

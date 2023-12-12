@@ -1,6 +1,5 @@
 package com.example.web.dto.responseDto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ProfileResponseDto {
-    private Long profileId;
+    private Long id;
     private String fullName;
     private String login;
     private String password;

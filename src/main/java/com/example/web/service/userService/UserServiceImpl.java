@@ -1,18 +1,14 @@
 package com.example.web.service.userService;
 
 import com.example.bot.entity.UsersEntity;
-import com.example.bot.exception.DataAlreadyExistsException;
 import com.example.bot.exception.DataNotFoundException;
 import com.example.bot.repository.UsersRepository;
-import com.example.web.dto.createdDto.UserCreateDto;
 import com.example.web.dto.responseDto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
