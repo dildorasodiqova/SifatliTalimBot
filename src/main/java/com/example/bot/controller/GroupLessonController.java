@@ -24,10 +24,4 @@ public class GroupLessonController {
         return "";
     }
 
-    @GetMapping("/by-id/{groupId}")
-    public String getById(@PathVariable Long groupId, Model model){
-        GroupLessonResponseDto byId = groupLessonService.getById(groupId);
-        model.addAttribute("groupLesson", byId);
-        return "";
-    }
 }
