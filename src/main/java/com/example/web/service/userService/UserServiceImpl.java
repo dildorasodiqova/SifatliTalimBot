@@ -42,6 +42,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.updateActiveALL(trueOrFalse);
     }
 
+    @Override
+    public void saveUserIfNotExists(UsersEntity user) {
+        if (!userRepository.existsById(user.getUserId())) userRepository.save(user);
+    }
+
     private UserResponseDto parse(UsersEntity entity) {
         return new UserResponseDto(entity.getUserId(), entity.getName(), entity.getSurname(), entity.getPhone(), entity.getPaidUntil(), entity.getIsActive());
     }

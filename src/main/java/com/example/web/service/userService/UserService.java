@@ -1,5 +1,6 @@
 package com.example.web.service.userService;
 
+import com.example.bot.entity.UsersEntity;
 import com.example.web.dto.responseDto.UserResponseDto;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface UserService{
     Boolean updateActive(Boolean trueOrFalse, Long userId);
 
     Boolean updateActiveAll(Boolean trueOrFalse);
+
+    void saveUserIfNotExists(UsersEntity user);
 }
