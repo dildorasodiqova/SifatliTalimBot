@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.TextStyle;
@@ -73,12 +74,53 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean updateActive(Boolean trueOrFalse, Long userId) {
-        return userRepository.updateActive(trueOrFalse, userId);
+        int i = userRepository.updateActive(trueOrFalse, userId);
+        if (i == 1){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
     public Boolean updateActiveAll(Boolean trueOrFalse) {
-        return userRepository.updateActiveALL(trueOrFalse);
+        int i = userRepository.updateActiveALL(trueOrFalse);
+        System.out.println(i + " nimdur");
+
+        if (i >= 1){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public List<UserResponseDto> searchUser(String word, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<UsersEntity> usersEntities = userRepository.searchUsers(word, pageRequest);
+        return parse(usersEntities.getContent());
+    }
+
+    @Override
+    public Boolean changeOneUserActive(Boolean trueOrFalse, Long userId) {
+         userRepository.updateUserActivityById(userId, trueOrFalse);
+         return true;
+    }
+
+    @Override
+    public Boolean changeActiveOfUsers(Boolean trueOrFalse) {
+        userRepository.updateAllUsersActivity(trueOrFalse);
+        return true;
+    }
+
+    @Override
+    public String updatePaidDate(LocalDate localDate, Long userId) {
+        int i = userRepository.updatePaidDate(localDate, userId);
+        if (i == 1){
+           return "Successfully";
+       }else {
+           return "Something went wrong";
+       }
     }
 
     private UserResponseDto parse(UsersEntity entity) {
