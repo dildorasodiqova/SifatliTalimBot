@@ -1,9 +1,6 @@
 package com.example.web.dto.responseDto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author 'Mukhtarov Sarvarbek' on 12.12.2023
@@ -14,6 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class UserStatisticsDTO {
 
     private Long count = 0L;
