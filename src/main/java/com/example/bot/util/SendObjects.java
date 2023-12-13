@@ -18,6 +18,7 @@ public class SendObjects {
     public SendMessage sendMessage() {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(user.getId());
+        sendMessage.setProtectContent(true);
         return sendMessage;
     }
 }

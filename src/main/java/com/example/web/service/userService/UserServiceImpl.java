@@ -17,6 +17,7 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 
 @Service
@@ -35,14 +36,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto getById(Long userId) {
-        UsersEntity usersEntity = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("User not found !!!"));
-        return parse(usersEntity);
+        return userRepository
+                .findById(userId)
+                .map(this::parse)
+                .orElse(null);
     }
 
     @Override
     public List<UserStatisticsDTO> statistic() {
         List<UserStatisticsDTO> list = new ArrayList<>();
-        for (int i = 30; i >= 1; i--) {
+        for (int i = 30; i >= 0; i--) {
             LocalDateTime localDateTime = LocalDateTime.now().minusDays(i);
             int year = localDateTime.getYear();
             int month = localDateTime.getMonthValue();
@@ -52,15 +55,6 @@ public class UserServiceImpl implements UserService {
             String time = localDateTime.getDayOfMonth() + "/" + localDateTime.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
             list.add(new UserStatisticsDTO(count.longValue(), time));
         }
-        LocalDateTime now = LocalDateTime.now();
-        int year = now.getYear();
-        int month = now.getMonthValue();
-        int day = now.getDayOfMonth();
-
-        Integer count = userRepository.countAllByCreatedDate(year, month, day);
-        String time = now.getDayOfMonth() + "/" + now.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
-
-        list.add(new UserStatisticsDTO(count.longValue(),time ));
         return list;
     }
 
@@ -75,23 +69,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean updateActive(Boolean trueOrFalse, Long userId) {
         int i = userRepository.updateActive(trueOrFalse, userId);
-        if (i == 1){
-            return true;
-        }else {
-            return false;
-        }
+        return i > 1;
     }
 
     @Override
     public Boolean updateActiveAll(Boolean trueOrFalse) {
         int i = userRepository.updateActiveALL(trueOrFalse);
-        System.out.println(i + " nimdur");
-
-        if (i >= 1){
-            return true;
-        }else {
-            return false;
-        }
+        return i > 0;
     }
 
     @Override
@@ -103,8 +87,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean changeOneUserActive(Boolean trueOrFalse, Long userId) {
-         userRepository.updateUserActivityById(userId, trueOrFalse);
-         return true;
+        userRepository.updateUserActivityById(userId, trueOrFalse);
+        return true;
     }
 
     @Override
@@ -116,16 +100,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updatePaidDate(LocalDate localDate, Long userId) {
         int i = userRepository.updatePaidDate(localDate, userId);
-        if (i == 1){
-           return "Successfully";
-       }else {
-           return "Something went wrong";
-       }
+        return i > 0 ? "Successfully" : "Something went wrong";
     }
 
     @Override
-    public void saveUserIfNotExists(UsersEntity user) {
-        if (!userRepository.existsById(user.getUserId())) userRepository.save(user);
+    public Boolean checkIsActive(Long userId) {
+        return userRepository.existsByUserIdAndIsActiveIsTrueAndIsDeletedIsFalse(userId);
+    }
+
+    @Override
+    public UsersEntity saveUserIfNotExists(UsersEntity user) {
+        Optional<UsersEntity> byId = userRepository.findById(user.getUserId());
+        return byId.orElse(userRepository.save(user));
     }
 
     private UserResponseDto parse(UsersEntity entity) {

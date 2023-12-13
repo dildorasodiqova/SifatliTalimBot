@@ -35,6 +35,8 @@ public class UsersEntity {
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
+    private Boolean isDeleted = false;
+
     public UsersEntity(Long userId, String username, String firstName, String lastName, Boolean isActive) {
         this.userId = userId;
         this.username = username;

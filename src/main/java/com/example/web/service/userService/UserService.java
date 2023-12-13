@@ -20,7 +20,7 @@ public interface UserService{
 
     Boolean updateActiveAll(Boolean trueOrFalse);
 
-    void saveUserIfNotExists(UsersEntity user);
+    UsersEntity saveUserIfNotExists(UsersEntity user);
 
     List<UserResponseDto> searchUser(String word, int page, int size);
 
@@ -29,5 +29,5 @@ public interface UserService{
 
     String updatePaidDate(LocalDate localDate, Long userId);
 
-
+    Boolean checkIsActive(Long userId);
 }

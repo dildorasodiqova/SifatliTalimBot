@@ -37,10 +37,13 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     Page<UsersEntity> findAllByIsActiveTrue(PageRequest pageRequest);
 
     @Transactional
-    @Query("SELECT u FROM UsersEntity u WHERE " +
-            "LOWER(u.name) LIKE LOWER(CONCAT('%', :word, '%')) OR " +
-            "LOWER(u.surname) LIKE LOWER(CONCAT('%', :word, '%')) OR " +
-            "LOWER(u.phone) LIKE LOWER(CONCAT('%', :word, '%'))")
+    @Query("""
+            SELECT u FROM UsersEntity u WHERE u.isDeleted = FALSE AND
+            LOWER(u.name) LIKE LOWER(CONCAT('%', :word, '%')) OR
+            LOWER(u.surname) LIKE LOWER(CONCAT('%', :word, '%')) OR
+            LOWER(u.phone) LIKE LOWER(CONCAT('%', :word, '%'))
+            """
+    )
     Page<UsersEntity> searchUsers(@Param("word") String word, Pageable pageable);
 
 
@@ -55,6 +58,22 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     @Transactional
     @Modifying
     @Query("update UsersEntity u set u.isActive = :isActive where u.userId = :userId")
-    int updateActive(@Param("isActive") Boolean trueOrFalse,@Param("userId") Long userId);
+    int updateActive(@Param("isActive") Boolean trueOrFalse, @Param("userId") Long userId);
 
+    boolean existsByUserIdAndIsActiveIsTrueAndIsDeletedIsFalse(Long userId);
+
+    @Transactional
+    @Modifying
+    @Query("update UsersEntity u set u.name = ?2 where u.userId = ?1 ")
+    void updateName(Long id, String text);
+
+    @Transactional
+    @Modifying
+    @Query("update UsersEntity u set u.surname = ?2 where u.userId = ?1 ")
+    void updateSurname(Long id, String text);
+
+    @Transactional
+    @Modifying
+    @Query("update UsersEntity u set u.phone = ?2 where u.userId = ?1 ")
+    void updatePhone(Long id, String text);
 }
