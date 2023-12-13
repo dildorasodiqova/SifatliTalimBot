@@ -2,6 +2,7 @@ package com.example.web.controller;
 
 import com.example.bot.dto.createDto.GroupCreateDto;
 import com.example.bot.dto.responseDto.GroupResponseDto;
+import com.example.bot.exception.ApiResponse;
 import com.example.web.service.groupServise.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,8 +32,8 @@ public class GroupController {
 
     @GetMapping("/byId/{groupId}")
     public String getById(@PathVariable Long groupId, Model model) {
-        GroupResponseDto byId = groupService.findById(groupId);
-        model.addAttribute("group", byId);
+        ApiResponse<GroupResponseDto> byId = groupService.findById(groupId);
+        model.addAttribute("group", byId.getData());
         return "";
     }
 }

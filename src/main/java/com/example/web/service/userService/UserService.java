@@ -1,5 +1,6 @@
 package com.example.web.service.userService;
 
+import com.example.bot.exception.ApiResponse;
 import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.dto.responseDto.UserStatisticsDTO;
 
@@ -10,7 +11,7 @@ public interface UserService{
 
     List<UserResponseDto> getAll(Integer page, Integer siza, String query);
 
-    UserResponseDto getById(Long userId);
+    ApiResponse<UserResponseDto> getById(Long userId);
     List<UserStatisticsDTO> statistic();
 
     List<UserResponseDto> nonPayingUsers(int page , int size);
