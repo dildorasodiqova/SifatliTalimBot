@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +24,14 @@ public class GroupServiceImpl implements GroupService {
     private final GroupUsersRepository groupUsersRepository;
 
     @Override
-    public GroupResponseDto create(GroupCreateDto dto) {
-        GroupEntity entity = parse(dto);
-        groupRepository.save(entity);
-        return parse(entity);
+    public ApiResponse<GroupResponseDto> create(GroupCreateDto dto) {
+        if (groupRepository.existsAllByName(dto.getName())){
+            return new ApiResponse<>(false, 400, "This group name already exists.");
+        }else {
+            GroupEntity entity = parse(dto);
+            groupRepository.save(entity);
+            return new ApiResponse<>(true, 200, "Successfully", parse(entity));
+        }
     }
 
     @Override
@@ -35,6 +40,18 @@ public class GroupServiceImpl implements GroupService {
         Page<GroupEntity> roadPage = groupRepository.findAllByActiveTrue(pageRequest);
         List<GroupEntity> content = roadPage.getContent();
         return parse(content);
+    }
+
+    @Override
+    public ApiResponse<String> startGroup(Long groupId) {
+        Optional<GroupEntity> groupEntity = groupRepository.findById(groupId);
+        if (groupEntity.isEmpty()){
+            return new ApiResponse<>(false, 400, "Group not found" );
+        }
+        if (groupEntity.get().getStartDate().isEqual(LocalDate.now())){
+            groupEntity.get().setStarted(true);
+        }
+        return new ApiResponse<>(true, 200, "Successfully", "Started");
     }
 
     @Override
@@ -65,6 +82,12 @@ public class GroupServiceImpl implements GroupService {
         return byId.map(group -> new ApiResponse<>(true, 200, "Successfully", parse(group))).orElseGet(() -> new ApiResponse<>(false, 400, "This group not found"));
     }
 
+    @Override
+    public String delete(Long groupId) {
+        groupRepository.delete(groupId);
+        return "Successfully";
+    }
+
     private GroupResponseDto parse(GroupEntity group){
         Integer counted = groupUsersRepository.countAllByGroupId(group.getId());
         return new GroupResponseDto(group.getId(), group.getName(), group.getDescription(), counted, "", group.getStartDate());
@@ -80,6 +103,6 @@ public class GroupServiceImpl implements GroupService {
         return list;
     }
     private GroupEntity parse(GroupCreateDto group){
-        return new GroupEntity(group.getName(), group.getDescription(), "", group.getStartDate());
+        return new GroupEntity(group.getName(), group.getDescription(), "", group.getStartDate(), false);
     }
 }

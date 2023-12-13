@@ -25,8 +25,8 @@ public class GroupController {
 
     @PostMapping("")
     public String create(@RequestBody GroupCreateDto dto, Model model) {
-        GroupResponseDto group = groupService.create(dto);
-        model.addAttribute("group", group);
+        ApiResponse<GroupResponseDto> response = groupService.create(dto);
+        model.addAttribute("group", response.getData());
         return "";
     }
 

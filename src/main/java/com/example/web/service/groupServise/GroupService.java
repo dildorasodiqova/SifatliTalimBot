@@ -10,10 +10,14 @@ import java.security.PublicKey;
 import java.util.List;
 
 public interface GroupService{
+    ApiResponse<GroupResponseDto> create(GroupCreateDto dto);
     ApiResponse<GroupEntity> getById(Long groupId);
     ApiResponse<GroupResponseDto> findById(Long groupId);
+    String delete(Long groupId);
+
     List<GroupResponseDto> getAll(Integer page, Integer size);
 
+    ApiResponse<String> startGroup(Long groupId);
     ApiResponse<GroupResponseDto> edit(GroupCreateDto groupCreateDto, Long groupId);
-    GroupResponseDto create(GroupCreateDto dto);
+
 }
