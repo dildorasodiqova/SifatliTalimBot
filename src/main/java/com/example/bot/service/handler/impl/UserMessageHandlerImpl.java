@@ -9,6 +9,8 @@ import com.example.bot.service.handler.UserMessageHandler;
 import com.example.bot.util.SendObjects;
 import com.example.web.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -24,7 +26,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserMessageHandlerImpl implements UserMessageHandler {
-    private final TalimBot telegramBot;
+    @Autowired
+    @Lazy
+    private  TalimBot telegramBot;
     private final UserService userService;
     private final UsersRepository usersRepository;
 
