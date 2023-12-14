@@ -25,9 +25,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public ApiResponse<GroupResponseDto> create(GroupCreateDto dto) {
-        if (groupRepository.existsAllByName(dto.getName())){
+        if (groupRepository.existsAllByName(dto.getName())) {
             return new ApiResponse<>(false, 400, "This group name already exists.");
-        }else {
+        } else {
             GroupEntity entity = parse(dto);
             groupRepository.save(entity);
             return new ApiResponse<>(true, 200, "Successfully", parse(entity));
@@ -45,27 +45,27 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ApiResponse<String> startGroup(Long groupId) {
         Optional<GroupEntity> groupEntity = groupRepository.findById(groupId);
-        if (groupEntity.isEmpty()){
-            return new ApiResponse<>(false, 400, "Group not found" );
+        if (groupEntity.isEmpty()) {
+            return new ApiResponse<>(false, 400, "Group not found");
         }
-        if (groupEntity.get().getStartDate().isEqual(LocalDate.now())){
-            groupEntity.get().setStarted(true);
-        }
-        return new ApiResponse<>(true, 200, "Successfully", "Started");
-    }
+        groupEntity.get().setStartDate(LocalDate.now());
+        groupEntity.get().setStarted(true);
+        groupRepository.save(groupEntity.get());
+        return new ApiResponse<>(true,200,"Successfully","Started");
+}
 
     @Override
     public ApiResponse<GroupResponseDto> edit(GroupCreateDto groupCreateDto, Long groupId) {
         Optional<GroupEntity> groupEntity = groupRepository.findById(groupId);
-        if (groupEntity.isEmpty()){
-            return new ApiResponse<>(false, 400, "Group not found" );
+        if (groupEntity.isEmpty()) {
+            return new ApiResponse<>(false, 400, "Group not found");
         }
         GroupEntity groupEntity1 = groupEntity.get();
         groupEntity1.setDescription(groupCreateDto.getDescription());
         groupEntity1.setName(groupCreateDto.getName());
         groupEntity1.setImageId("");
         groupEntity1.setStartDate(groupCreateDto.getStartDate());
-         groupRepository.save(groupEntity1);
+        groupRepository.save(groupEntity1);
         GroupResponseDto parse = parse(groupEntity1);
         return new ApiResponse<>(true, 200, "Successfully", parse);
     }
@@ -88,21 +88,22 @@ public class GroupServiceImpl implements GroupService {
         return "Successfully";
     }
 
-    private GroupResponseDto parse(GroupEntity group){
+    private GroupResponseDto parse(GroupEntity group) {
         Integer counted = groupUsersRepository.countAllByGroupId(group.getId());
         return new GroupResponseDto(group.getId(), group.getName(), group.getDescription(), counted, "", group.getStartDate());
     }
 
-    private List<GroupResponseDto> parse(List<GroupEntity> group){
+    private List<GroupResponseDto> parse(List<GroupEntity> group) {
         List<GroupResponseDto> list = new ArrayList<>();
         for (GroupEntity groupEntity : group) {
             Integer counted = groupUsersRepository.countAllByGroupId(groupEntity.getId());
-          //  shu yerda image urlni nima qilishim kk
-            list.add(new GroupResponseDto(groupEntity.getId(),groupEntity.getName(), groupEntity.getDescription(),counted,new String(),  groupEntity.getStartDate()));
+            //  shu yerda image urlni nima qilishim kk
+            list.add(new GroupResponseDto(groupEntity.getId(), groupEntity.getName(), groupEntity.getDescription(), counted, new String(), groupEntity.getStartDate()));
         }
         return list;
     }
-    private GroupEntity parse(GroupCreateDto group){
+
+    private GroupEntity parse(GroupCreateDto group) {
         return new GroupEntity(group.getName(), group.getDescription(), "", group.getStartDate(), false);
     }
 }

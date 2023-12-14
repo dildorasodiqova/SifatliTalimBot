@@ -15,7 +15,7 @@ public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
    Boolean existsAllByName(String name);
    @Modifying
    @Transactional
-   @Query("UPDATE GroupEntity g SET g.active = :false WHERE g.id = :groupId")
+   @Query("UPDATE GroupEntity g SET g.active = false WHERE g.id = :groupId")
    void delete(@Param("groupId") Long groupId);
 
 }
