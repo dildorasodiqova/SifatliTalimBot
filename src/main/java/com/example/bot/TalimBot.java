@@ -2,6 +2,7 @@ package com.example.bot;
 
 import com.example.bot.config.BotVariables;
 import com.example.bot.config.TelegramAppConfig;
+import com.example.bot.exception.ApiResponse;
 import com.example.bot.service.handler.UserMessageHandler;
 import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.service.userService.UserService;
@@ -41,8 +42,8 @@ public class TalimBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         System.out.println(update);
-        UserResponseDto savedUser = userService.getById(getUserIdByUpdate(update));
-        if (savedUser != null && !savedUser.getIsActive()) {
+        ApiResponse<UserResponseDto> savedUser = userService.getById(getUserIdByUpdate(update));
+        if (!savedUser.getIsSuccess() && !savedUser.getData().getIsActive()) {
             System.out.println("User non active");
             // send message Siz blocklangansiz
         } else if (update.hasMessage()) {
