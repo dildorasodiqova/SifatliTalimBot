@@ -1,7 +1,7 @@
 package com.example.web.service.userService;
 
 import com.example.bot.entity.UsersEntity;
-import com.example.bot.exception.DataNotFoundException;
+import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.UsersRepository;
 import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.dto.responseDto.UserStatisticsDTO;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 
 @Service
@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserResponseDto getById(Long userId) {
-        UsersEntity usersEntity = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("User not found !!!"));
-        return parse(usersEntity);
+    public ApiResponse<UserResponseDto> getById(Long userId) {
+        Optional<UsersEntity> byId = userRepository.findById(userId);
+        return byId.map(entity -> new ApiResponse<>(true, 200, "Successfully", parse(entity))).orElseGet(() -> new ApiResponse<>(false, 400, "User not found "));
     }
 
     @Override

@@ -4,11 +4,13 @@ import com.example.bot.dto.createDto.GroupLessonCreateDto;
 import com.example.bot.dto.responseDto.GroupLessonResponseDto;
 import com.example.bot.entity.group.GroupEntity;
 import com.example.bot.entity.group.GroupLessonsEntity;
-import com.example.bot.exception.DataNotFoundException;
+import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.GroupLessonRepository;
 import com.example.web.service.groupServise.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,13 +26,14 @@ public class GroupLessonServiceImpl implements GroupLessonService {
     }
 
     @Override
-    public GroupLessonResponseDto getById(Long groupId) {
-        GroupLessonsEntity groupLessonNotFound = groupLessonRepository.findById(groupId).orElseThrow(() -> new DataNotFoundException("GroupLesson not found"));
-        return parse(groupLessonNotFound);
+    public ApiResponse<GroupLessonResponseDto> getById(Long groupId) {
+        Optional<GroupLessonsEntity> byId = groupLessonRepository.findById(groupId);
+        return byId.map(entity -> new ApiResponse<>(true, 200, "Successfully", parse(entity))).orElseGet(() -> new ApiResponse<>(false, 400, "GroupLesson not found"));
     }
 
     private GroupLessonsEntity parse(GroupLessonCreateDto dto) {
-        GroupEntity group = groupService.getById(dto.getGroupId());
+        ApiResponse<GroupEntity> byId = groupService.getById(dto.getGroupId());
+        GroupEntity data = byId.getData();
         //todo write parse
         return new GroupLessonsEntity();
     }

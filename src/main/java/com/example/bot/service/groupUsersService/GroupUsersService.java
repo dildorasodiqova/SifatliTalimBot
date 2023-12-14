@@ -11,4 +11,7 @@ public interface GroupUsersService {
     GroupUsersResponseDto getById(Long groupId);
 
     List<GroupUsersResponseDto> usersOfGroup(Long groupId);
+
+    String addUserToGroup(Long groupId, Long userId);
+    String deleteUserOfGroup(Long groupId, Long userId);
 }

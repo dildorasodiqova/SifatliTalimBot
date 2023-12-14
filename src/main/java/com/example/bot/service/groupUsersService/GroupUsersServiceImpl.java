@@ -29,4 +29,14 @@ public class GroupUsersServiceImpl implements GroupUsersService{
     public List<GroupUsersResponseDto> usersOfGroup(Long groupId) {
         return null;
     }
+
+    @Override
+    public String addUserToGroup(Long groupId, Long userId) {
+        return null;
+    }
+
+    @Override
+    public String deleteUserOfGroup(Long groupId, Long userId) {
+        return null;
+    }
 }
