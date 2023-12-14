@@ -24,7 +24,7 @@ public interface UserService{
 
     UsersEntity saveUserIfNotExists(UsersEntity user);
 
-    List<UserResponseDto> searchUser(String word, int page, int size);
+    PageImpl<UserResponseDto> searchUser(String word, int page, int size);
 
     Boolean changeOneUserActive(Boolean trueOrFalse, Long userId);
     Boolean changeActiveOfUsers(Boolean trueOrFalse);

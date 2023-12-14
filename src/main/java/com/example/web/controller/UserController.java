@@ -25,7 +25,7 @@ public class UserController {
 
         model.addAttribute("searchValue", query);
 
-        PageImpl<UserResponseDto> allResponse = userService.getAll(page, size, query);
+        PageImpl<UserResponseDto> allResponse = userService.searchUser(query, page, size);
 
         model.addAttribute("userList", allResponse);
 

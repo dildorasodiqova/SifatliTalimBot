@@ -78,10 +78,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> searchUser(String word, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+    public PageImpl<UserResponseDto> searchUser(String word, int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
         Page<UsersEntity> usersEntities = userRepository.searchUsers(word, pageRequest);
-        return parse(usersEntities.getContent());
+        return new PageImpl<>(parse(usersEntities.getContent()), pageRequest, usersEntities.getTotalElements());
     }
 
     @Override
