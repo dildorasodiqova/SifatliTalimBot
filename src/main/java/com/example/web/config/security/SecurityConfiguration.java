@@ -53,7 +53,6 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public UserDetailsService myUserDetailsService(ProfileRepository userRepository) {
         return new UserDetailService(userRepository);

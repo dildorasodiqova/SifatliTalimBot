@@ -1,5 +1,6 @@
 package com.example.web.service.userService;
 
+import com.example.bot.entity.UsersEntity;
 import com.example.bot.exception.ApiResponse;
 import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.dto.responseDto.UserStatisticsDTO;
@@ -20,6 +21,8 @@ public interface UserService{
 
     Boolean updateActiveAll(Boolean trueOrFalse);
 
+    UsersEntity saveUserIfNotExists(UsersEntity user);
+
     List<UserResponseDto> searchUser(String word, int page, int size);
 
     Boolean changeOneUserActive(Boolean trueOrFalse, Long userId);
@@ -27,5 +30,5 @@ public interface UserService{
 
     String updatePaidDate(LocalDate localDate, Long userId);
 
-
+    Boolean checkIsActive(Long userId);
 }

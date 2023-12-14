@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,7 +19,9 @@ public class GroupLessonController {
     private final GroupLessonService groupLessonService;
 
     @PostMapping()
-    public String add(@RequestBody GroupLessonCreateDto dto, Model model){
+    public String add(@ModelAttribute GroupLessonCreateDto dto,
+                      @RequestParam("mediaFile") MultipartFile mediaFile,
+                      Model model) {
         GroupLessonResponseDto add = groupLessonService.add(dto);
         model.addAttribute("groupLesson", add);
         return "";
