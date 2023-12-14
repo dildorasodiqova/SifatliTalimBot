@@ -27,11 +27,11 @@ public class UserServiceImpl implements UserService {
     private final UsersRepository userRepository;
 
     @Override
-    public List<UserResponseDto> getAll(Integer page, Integer size, String query) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+    public PageImpl<UserResponseDto> getAll(Integer page, Integer size, String query) {
+        Pageable pageRequest = PageRequest.of(page, size);
         Page<UsersEntity> roadPage = userRepository.findAllByIsActiveTrue(pageRequest);
         List<UsersEntity> content = roadPage.getContent();
-        return parse(content);
+        return new PageImpl<>(parse(content), pageRequest, roadPage.getTotalElements());
     }
 
 

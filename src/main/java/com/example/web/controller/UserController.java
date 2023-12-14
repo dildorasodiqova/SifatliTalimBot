@@ -3,6 +3,7 @@ package com.example.web.controller;
 import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,12 @@ public class UserController {
                               @RequestParam(value = "searchValue", required = false, defaultValue = "") String query,
                               Model model) {
 
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
         model.addAttribute("searchValue", query);
 
-        List<UserResponseDto> allResponse = userService.getAll(page, size, query);
+        PageImpl<UserResponseDto> allResponse = userService.getAll(page, size, query);
 
         model.addAttribute("userList", allResponse);
+
         return "user/index";
     }
 

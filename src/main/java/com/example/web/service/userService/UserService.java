@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface UserService{
 
-    List<UserResponseDto> getAll(Integer page, Integer siza, String query);
+    PageImpl<UserResponseDto> getAll(Integer page, Integer siza, String query);
 
     ApiResponse<UserResponseDto> getById(Long userId);
     List<UserStatisticsDTO> statistic();

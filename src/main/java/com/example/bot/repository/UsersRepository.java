@@ -34,7 +34,7 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     @Query("UPDATE UsersEntity u SET u.isActive = :isActive")
     void updateAllUsersActivity(@Param("isActive") boolean isActive);
 
-    Page<UsersEntity> findAllByIsActiveTrue(PageRequest pageRequest);
+    Page<UsersEntity> findAllByIsActiveTrue(Pageable pageRequest);
 
     @Transactional
     @Query("""
