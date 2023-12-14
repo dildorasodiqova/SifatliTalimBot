@@ -2,6 +2,7 @@ package com.example.web.controller;
 
 import com.example.bot.dto.createDto.GroupCreateDto;
 import com.example.bot.dto.responseDto.GroupResponseDto;
+import com.example.bot.exception.ApiResponse;
 import com.example.web.service.groupServise.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,15 +25,15 @@ public class GroupController {
 
     @PostMapping("")
     public String create(@RequestBody GroupCreateDto dto, Model model) {
-        GroupResponseDto group = groupService.create(dto);
-        model.addAttribute("group", group);
+        ApiResponse<GroupResponseDto> response = groupService.create(dto);
+        model.addAttribute("group", response.getData());
         return "";
     }
 
     @GetMapping("/byId/{groupId}")
     public String getById(@PathVariable Long groupId, Model model) {
-        GroupResponseDto byId = groupService.findById(groupId);
-        model.addAttribute("group", byId);
+        ApiResponse<GroupResponseDto> byId = groupService.findById(groupId);
+        model.addAttribute("group", byId.getData());
         return "";
     }
 }
