@@ -4,6 +4,7 @@ import com.example.bot.dto.createDto.GroupUsersCreateDto;
 import com.example.bot.dto.responseDto.GroupUsersResponseDto;
 import com.example.bot.entity.group.GroupUsersEntity;
 import com.example.bot.repository.GroupUsersRepository;
+import com.example.web.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GroupUsersServiceImpl implements GroupUsersService{
     private final GroupUsersRepository groupUsersRepository;
+    private final UserService userService;
     @Override
     public GroupUsersResponseDto add(GroupUsersCreateDto dto) {
-        // todo
+        parse(dto);
         return null;
     }
 
@@ -27,7 +29,7 @@ public class GroupUsersServiceImpl implements GroupUsersService{
     }
 
     @Override
-    public List<GroupUsersResponseDto> usersOfGroup(Long groupId) {
+    public List<> usersOfGroup(Long groupId) {
         List<User>
         List<GroupUsersEntity> allByGroupId = groupUsersRepository.findAllByGroupId(groupId);
         for (GroupUsersEntity users : allByGroupId) {
@@ -37,11 +39,13 @@ public class GroupUsersServiceImpl implements GroupUsersService{
 
     @Override
     public String addUserToGroup(Long groupId, Long userId) {
-        return null;
+        groupUsersRepository.save(new GroupUsersEntity(groupId, userId));
+        return "Successfully";
     }
 
     @Override
     public String deleteUserOfGroup(Long groupId, Long userId) {
-        return null;
+       groupUsersRepository.deleteUserFromGroup(groupId, userId);
+       return "Successfully deleted";
     }
 }
