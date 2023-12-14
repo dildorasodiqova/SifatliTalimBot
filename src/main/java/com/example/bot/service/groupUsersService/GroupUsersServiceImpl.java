@@ -2,6 +2,7 @@ package com.example.bot.service.groupUsersService;
 
 import com.example.bot.dto.createDto.GroupUsersCreateDto;
 import com.example.bot.dto.responseDto.GroupUsersResponseDto;
+import com.example.bot.entity.group.GroupUsersEntity;
 import com.example.bot.repository.GroupUsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,11 @@ public class GroupUsersServiceImpl implements GroupUsersService{
 
     @Override
     public List<GroupUsersResponseDto> usersOfGroup(Long groupId) {
-        return null;
+        List<User>
+        List<GroupUsersEntity> allByGroupId = groupUsersRepository.findAllByGroupId(groupId);
+        for (GroupUsersEntity users : allByGroupId) {
+            users.getUser()
+        }
     }
 
     @Override
