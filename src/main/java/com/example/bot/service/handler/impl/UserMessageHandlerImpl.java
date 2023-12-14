@@ -28,7 +28,7 @@ import java.util.Optional;
 public class UserMessageHandlerImpl implements UserMessageHandler {
     @Autowired
     @Lazy
-    private  TalimBot telegramBot;
+    private TalimBot telegramBot;
     private final UserService userService;
     private final UsersRepository usersRepository;
 
@@ -78,8 +78,7 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
             default -> {
                 UserSteps step = UserStatusManage.getStep(user.getId());
                 switch (step) {
-                    case ENTERING_PHONE, ENTERING_NAME, ENTERING_SURNAME ->
-                            fillingUserData(message, user, step, sendObjects);
+                    case ENTERING_NAME, ENTERING_SURNAME -> fillingUserData(message, user, step, sendObjects);
                 }
 
             }
@@ -96,15 +95,8 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
                 telegramBot.send(sendMessage);
                 UserStatusManage.setStep(user.getId(), UserSteps.ENTERING_SURNAME);
             }
-            case ENTERING_PHONE -> {
-                usersRepository.updateSurname(user.getId(), text);
-                SendMessage sendMessage = sendObjects.sendMessage();
-                sendMessage.setText("Botimizga xush kelibsiz!");
-                telegramBot.send(sendMessage);
-                UserStatusManage.remove(user.getId());
-            }
             case ENTERING_SURNAME -> {
-                usersRepository.updatePhone(user.getId(), text);
+                usersRepository.updateSurname(user.getId(), text);
                 SendMessage sendMessage = sendObjects.sendMessage();
                 sendMessage.setText("Iltimos raqamingizni yuboring!");
                 telegramBot.send(sendMessage);

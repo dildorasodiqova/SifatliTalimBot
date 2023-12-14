@@ -1,11 +1,16 @@
 package com.example.web.controller;
 
 import com.example.web.service.userService.UserService;
+import com.example.web.util.CookieUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author 'Mukhtarov Sarvarbek' on 11.12.2023
@@ -17,10 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class DashboardController {
     private final UserService userService;
+
     @GetMapping("")
-    public String dashboard(Model model){
-        // shu yerga
-        model.addAttribute("userStatics",userService.statistic());
+    public String dashboard(@RequestParam(value = "page", defaultValue = "0") int page,Model model) {
+
+        model.addAttribute("userStatics", userService.statistic());
+        model.addAttribute("noPaidUsers", userService.nonPayingUsers(page, 20));
+        model.addAttribute("url", "/dashboard");
+
         return "dashboard/index";
     }
 }

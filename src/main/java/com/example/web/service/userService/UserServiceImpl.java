@@ -7,7 +7,9 @@ import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.dto.responseDto.UserStatisticsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -56,11 +58,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> nonPayingUsers(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+    public PageImpl<UserResponseDto> nonPayingUsers(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
         Page<UsersEntity> users = userRepository.findAllByPaidUntil(pageRequest);
         List<UsersEntity> content = users.getContent();
-        return parse(content);
+        return new PageImpl<>(parse(content), pageRequest, users.getTotalElements());
     }
 
     @Override

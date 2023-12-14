@@ -4,6 +4,7 @@ import com.example.bot.entity.UsersEntity;
 import com.example.bot.exception.ApiResponse;
 import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.dto.responseDto.UserStatisticsDTO;
+import org.springframework.data.domain.PageImpl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface UserService{
     ApiResponse<UserResponseDto> getById(Long userId);
     List<UserStatisticsDTO> statistic();
 
-    List<UserResponseDto> nonPayingUsers(int page , int size);
+    PageImpl<UserResponseDto> nonPayingUsers(int page , int size);
 
     Boolean updateActive(Boolean trueOrFalse, Long userId);
 
