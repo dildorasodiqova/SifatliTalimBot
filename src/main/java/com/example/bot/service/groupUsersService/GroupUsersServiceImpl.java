@@ -27,11 +27,7 @@ public class GroupUsersServiceImpl implements GroupUsersService{
         GroupUsersEntity save = groupUsersRepository.save(new GroupUsersEntity(dto.getGroupId(), dto.getUserId()));
     }
 
-    @Override
-    public ApiResponse<GroupUsersResponseDto> getById(Long groupId) {
-        Optional<GroupUsersEntity> byId = groupUsersRepository.findById(groupId);
-        return byId.map(entity -> new ApiResponse<>(true, 200, "Successfully", parse(entity))).orElseGet(() -> new ApiResponse<>(false, 400, "Group not found"));
-    }
+
 
     @Override
     public List<UserOfGroupMapResponse> usersOfGroup(Long groupId) {
