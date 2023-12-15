@@ -2,16 +2,16 @@ package com.example.bot.service.groupUsersService;
 
 import com.example.bot.dto.createDto.GroupUsersCreateDto;
 import com.example.bot.dto.responseDto.GroupUsersResponseDto;
+import com.example.bot.exception.ApiResponse;
+import com.example.web.dto.responseDto.UserOfGroupMapResponse;
 
 import java.util.List;
 
 public interface GroupUsersService {
-    GroupUsersResponseDto add(GroupUsersCreateDto dto);
+    void add(GroupUsersCreateDto dto);
 
-    GroupUsersResponseDto getById(Long groupId);
 
-    List<GroupUsersResponseDto> usersOfGroup(Long groupId);
+    List<UserOfGroupMapResponse> usersOfGroup(Long groupId);
 
-    String addUserToGroup(Long groupId, Long userId);
     String deleteUserOfGroup(Long groupId, Long userId);
 }
