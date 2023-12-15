@@ -14,17 +14,18 @@ import java.util.Optional;
 
 public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
 
-    Page<GroupEntity> findAllByActiveTrue(Pageable pageRequest);
+    @Query("from GroupEntity where lower(name) like concat('%',lower(?1) ,'%') and visible = true ")
+    Page<GroupEntity> findAllByActiveTrue(String query, Pageable pageRequest);
 
     Boolean existsAllByName(String name);
 
     @Modifying
     @Transactional
-    @Query("UPDATE GroupEntity g SET g.active = false WHERE g.id = :groupId")
+    @Query("UPDATE GroupEntity g SET g.visible = false WHERE g.id = :groupId")
     void delete(@Param("groupId") Long groupId);
 
     @Query("""
-            FROM GroupEntity where lower(name) = ?1 and visible is true
+            FROM GroupEntity where lower(name) = ?1 and visible = true
             """)
     Optional<GroupEntity> findByName(String text);
 }

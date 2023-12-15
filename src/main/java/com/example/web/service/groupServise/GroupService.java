@@ -4,10 +4,7 @@ import com.example.bot.dto.createDto.GroupCreateDto;
 import com.example.bot.dto.responseDto.GroupResponseDto;
 import com.example.bot.entity.group.GroupEntity;
 import com.example.bot.exception.ApiResponse;
-import com.example.web.dto.responseDto.UserResponseDto;
-
-import java.security.PublicKey;
-import java.util.List;
+import org.springframework.data.domain.PageImpl;
 
 public interface GroupService{
     ApiResponse<GroupResponseDto> create(GroupCreateDto dto);
@@ -15,7 +12,7 @@ public interface GroupService{
     ApiResponse<GroupResponseDto> findById(Long groupId);
     String delete(Long groupId);
 
-    List<GroupResponseDto> getAll(Integer page, Integer size);
+    PageImpl<GroupResponseDto> getAll(String query, Integer page, Integer size);
 
     ApiResponse<String> startGroup(Long groupId);
     ApiResponse<GroupResponseDto> edit(GroupCreateDto groupCreateDto, Long groupId);

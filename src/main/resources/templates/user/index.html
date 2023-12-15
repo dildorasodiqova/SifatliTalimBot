@@ -160,7 +160,7 @@
                     <ul class="pagination">
                         <li class="page-item" th:class="${userList.hasPrevious()} ? '' : 'disabled'">
                             <a class="page-link" th:if="${userList.hasPrevious()}"
-                               th:href="@{/user-list(page=${userList.previousPageable().pageNumber}, searchValue=${searchValue})}">Orqaga</a>
+                               th:href="@{/users(page=${userList.previousPageable().pageNumber}, searchValue=${searchValue})}">Orqaga</a>
                             <span class="page-link" th:if="!${userList.hasPrevious()}">Orqaga</span>
 
                         </li>

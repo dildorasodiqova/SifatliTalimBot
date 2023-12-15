@@ -7,8 +7,7 @@ import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.GroupRepository;
 import com.example.bot.repository.GroupUsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,11 +34,16 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupResponseDto> getAll(Integer page, Integer size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<GroupEntity> roadPage = groupRepository.findAllByActiveTrue(pageRequest);
+    public PageImpl<GroupResponseDto> getAll(String query, Integer page, Integer size) {
+        Pageable pageRequest = PageRequest
+                .of(
+                        page,
+                        size,
+                        Sort.by(Sort.Direction.DESC, "createdDate")
+                );
+        Page<GroupEntity> roadPage = groupRepository.findAllByActiveTrue(query, pageRequest);
         List<GroupEntity> content = roadPage.getContent();
-        return parse(content);
+        return new PageImpl<>(parse(content), pageRequest, roadPage.getTotalElements());
     }
 
     @Override
