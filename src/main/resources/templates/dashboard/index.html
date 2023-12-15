@@ -105,7 +105,7 @@
                             <span class="page-link" th:if="!${noPaidUsers.hasPrevious()}">Orqaga</span>
                         </li>
                         <li class="page-item" th:class="${noPaidUsers.number == i} ? 'active' : ''"
-                            th:each="i : ${#numbers.sequence(0, (noPaidUsers.totalPages)-1)}">
+                            th:each="i : ${#numbers.sequence(0, (noPaidUsers.totalPages))}">
                             <a class="page-link" th:href="@{${url}(page=${i})}" th:text="${i}+1"></a>
                         </li>
                         <li class="page-item" th:class="${noPaidUsers.hasNext()} ? '' : 'disabled'">
