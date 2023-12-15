@@ -24,7 +24,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public ApiResponse<GroupResponseDto> create(GroupCreateDto dto) {
-        user
+
         if (groupRepository.existsAllByName(dto.getName())) {
             return new ApiResponse<>(false, 400, "This group name already exists.");
         } else {
@@ -116,6 +116,6 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private GroupEntity parse(GroupCreateDto group) {
-        return new GroupEntity(group.getName(), group.getDescription(), group.getStartDate(), false);
+        return new GroupEntity(group.getTeacherId(), group.getName(), group.getDescription(), group.getStartDate(), false);
     }
 }
