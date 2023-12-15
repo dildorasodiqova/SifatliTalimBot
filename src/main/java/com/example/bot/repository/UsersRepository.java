@@ -76,4 +76,9 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     @Modifying
     @Query("update UsersEntity u set u.phone = ?2 where u.userId = ?1 ")
     void updatePhone(Long id, String text);
+
+    @Query("UPDATE UsersEntity u set u.groupId = ?2 where u.userId=?1")
+    @Modifying
+    @Transactional
+    void updateGroup(Long id, Long groupId);
 }

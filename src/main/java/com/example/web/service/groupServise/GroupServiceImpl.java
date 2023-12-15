@@ -51,8 +51,8 @@ public class GroupServiceImpl implements GroupService {
         groupEntity.get().setStartDate(LocalDate.now());
         groupEntity.get().setStarted(true);
         groupRepository.save(groupEntity.get());
-        return new ApiResponse<>(true,200,"Successfully","Started");
-}
+        return new ApiResponse<>(true, 200, "Successfully", "Started");
+    }
 
     @Override
     public ApiResponse<GroupResponseDto> edit(GroupCreateDto groupCreateDto, Long groupId) {
@@ -63,11 +63,18 @@ public class GroupServiceImpl implements GroupService {
         GroupEntity groupEntity1 = groupEntity.get();
         groupEntity1.setDescription(groupCreateDto.getDescription());
         groupEntity1.setName(groupCreateDto.getName());
-        groupEntity1.setImageId("");
         groupEntity1.setStartDate(groupCreateDto.getStartDate());
         groupRepository.save(groupEntity1);
         GroupResponseDto parse = parse(groupEntity1);
         return new ApiResponse<>(true, 200, "Successfully", parse);
+    }
+
+    @Override
+    public ApiResponse<GroupResponseDto> findByName(String text) {
+        return groupRepository
+                .findByName(text)
+                .map(item -> new ApiResponse<>(true, 200, "", parse(item)))
+                .orElse(new ApiResponse<>(false, 400, "Not found"));
     }
 
     @Override
@@ -90,7 +97,7 @@ public class GroupServiceImpl implements GroupService {
 
     private GroupResponseDto parse(GroupEntity group) {
         Integer counted = groupUsersRepository.countAllByGroupId(group.getId());
-        return new GroupResponseDto(group.getId(), group.getName(), group.getDescription(), counted, "", group.getStartDate());
+        return new GroupResponseDto(group.getId(), group.getName(), group.getDescription(), counted, group.getStartDate());
     }
 
     private List<GroupResponseDto> parse(List<GroupEntity> group) {
@@ -98,12 +105,12 @@ public class GroupServiceImpl implements GroupService {
         for (GroupEntity groupEntity : group) {
             Integer counted = groupUsersRepository.countAllByGroupId(groupEntity.getId());
             //  shu yerda image urlni nima qilishim kk
-            list.add(new GroupResponseDto(groupEntity.getId(), groupEntity.getName(), groupEntity.getDescription(), counted, new String(), groupEntity.getStartDate()));
+            list.add(new GroupResponseDto(groupEntity.getId(), groupEntity.getName(), groupEntity.getDescription(), counted, groupEntity.getStartDate()));
         }
         return list;
     }
 
     private GroupEntity parse(GroupCreateDto group) {
-        return new GroupEntity(group.getName(), group.getDescription(), "", group.getStartDate(), false);
+        return new GroupEntity(group.getName(), group.getDescription(), group.getStartDate(), false);
     }
 }

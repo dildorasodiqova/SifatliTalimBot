@@ -1,18 +1,24 @@
 package com.example.bot.service.handler.impl;
 
 import com.example.bot.TalimBot;
+import com.example.bot.dto.responseDto.GroupResponseDto;
 import com.example.bot.entity.UsersEntity;
 import com.example.bot.enums.UserSteps;
+import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.UsersRepository;
 import com.example.bot.service.UserStatusManage;
 import com.example.bot.service.handler.UserMessageHandler;
+import com.example.bot.util.KeyboardButtonUtil;
 import com.example.bot.util.SendObjects;
+import com.example.web.service.groupServise.GroupService;
 import com.example.web.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Contact;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -31,6 +37,7 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
     private TalimBot telegramBot;
     private final UserService userService;
     private final UsersRepository usersRepository;
+    private final GroupService groupService;
 
     @Override
     public void handleText(Message message, User user) {
@@ -72,6 +79,17 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
                             Iltimos raqamingizni yuboring!
                             """);
                     UserStatusManage.setStep(user.getId(), UserSteps.ENTERING_PHONE);
+                } else if (Optional.ofNullable(savedUser.getGroupId()).isEmpty()) {
+                    sendMessage.setText("""
+                            Assalomu Aleykum 👋
+                                                    
+                            Botimizga xush kelibsiz!
+                                                    
+                            <b>Iltimos guruhingizni yozing!</b>
+                            """);
+                    sendMessage.setParseMode(ParseMode.HTML);
+                    telegramBot.send(sendMessage);
+                    UserStatusManage.setStep(user.getId(), UserSteps.ENTERING_GROUP);
                 }
                 telegramBot.send(sendMessage);
             }
@@ -79,28 +97,57 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
                 UserSteps step = UserStatusManage.getStep(user.getId());
                 switch (step) {
                     case ENTERING_NAME, ENTERING_SURNAME -> fillingUserData(message, user, step, sendObjects);
+                    case ENTERING_GROUP -> {
+                        SendMessage sendMessage = sendObjects.sendMessage();
+                        ApiResponse<GroupResponseDto> groupRes = groupService.findByName(text);
+                        if (groupRes.getIsSuccess()) {
+                            usersRepository.updateGroup(user.getId(), groupRes.getData().getGroupId());
+                            sendMessage.setText("Muvaffaqiyatli tanlandi!");
+                            telegramBot.send(sendMessage);
+                            UserStatusManage.remove(user.getId());
+                            return;
+                        }
+                        sendMessage.setText("Bunday guruh topilmadi!");
+                        telegramBot.send(sendMessage);
+                    }
                 }
 
             }
         }
     }
 
+    @Override
+    public void handleContact(Message message, User user) {
+        UserSteps step = UserStatusManage.getStep(user.getId());
+        SendObjects sendObjects = new SendObjects(user);
+        switch (step) {
+            case ENTERING_PHONE -> fillingUserData(message, user, step, sendObjects);
+        }
+    }
+
     private void fillingUserData(Message message, User user, UserSteps step, SendObjects sendObjects) {
         String text = message.getText();
+        SendMessage sendMessage = sendObjects.sendMessage();
         switch (step) {
             case ENTERING_NAME -> {
                 usersRepository.updateName(user.getId(), text);
-                SendMessage sendMessage = sendObjects.sendMessage();
                 sendMessage.setText("Iltimos familyangizni kiriting!");
                 telegramBot.send(sendMessage);
                 UserStatusManage.setStep(user.getId(), UserSteps.ENTERING_SURNAME);
             }
             case ENTERING_SURNAME -> {
                 usersRepository.updateSurname(user.getId(), text);
-                SendMessage sendMessage = sendObjects.sendMessage();
                 sendMessage.setText("Iltimos raqamingizni yuboring!");
+                sendMessage.setReplyMarkup(KeyboardButtonUtil.MY_PHONE_BUTTON());
                 telegramBot.send(sendMessage);
                 UserStatusManage.setStep(user.getId(), UserSteps.ENTERING_PHONE);
+            }
+            case ENTERING_PHONE -> {
+                Contact contact = message.getContact();
+                usersRepository.updatePhone(user.getId(), contact.getPhoneNumber());
+                sendMessage.setText("Guruhingizni kiriting!");
+                telegramBot.send(sendMessage);
+                UserStatusManage.setStep(user.getId(), UserSteps.ENTERING_GROUP);
             }
         }
     }

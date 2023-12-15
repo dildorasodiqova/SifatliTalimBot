@@ -20,4 +20,5 @@ public interface GroupService{
     ApiResponse<String> startGroup(Long groupId);
     ApiResponse<GroupResponseDto> edit(GroupCreateDto groupCreateDto, Long groupId);
 
+    ApiResponse<GroupResponseDto> findByName(String text);
 }

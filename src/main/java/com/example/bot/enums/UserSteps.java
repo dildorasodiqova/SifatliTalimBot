@@ -9,6 +9,6 @@ public enum UserSteps {
     ENTERING_NAME,
     ENTERING_SURNAME,
     ENTERING_PHONE,
-    DEFAULT_STEP
-    ;
+    DEFAULT_STEP,
+    ENTERING_GROUP;
 }

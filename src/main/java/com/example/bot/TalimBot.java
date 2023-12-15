@@ -51,8 +51,8 @@ public class TalimBot extends TelegramLongPollingBot {
             User user = message.getFrom();
             if (message.hasText()) {
                 userMessageHandler.handleText(message, user);
-            } else if (message.hasPhoto()) {
-
+            } else if (message.hasContact()) {
+                userMessageHandler.handleContact(message,user);
             }
         }
     }

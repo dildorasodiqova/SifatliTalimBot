@@ -10,4 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.User;
  */
 public interface UserMessageHandler {
     void handleText(Message message, User user);
+
+    void handleContact(Message message, User user);
 }
