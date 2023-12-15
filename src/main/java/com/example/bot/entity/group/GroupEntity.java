@@ -18,9 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroupEntity extends BaseLongEntity {
-//    {
-//        this.setStarted(false);
-//    }
+    private Long teacherId;
     private String name; // group name
     private String description; // some text about this group
     private String imageId; // id is telegram media id

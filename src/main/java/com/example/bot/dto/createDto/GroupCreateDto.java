@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class GroupCreateDto {
+    private Long teacherId;
     private String name;
     private String description;
     private LocalDate startDate;
