@@ -56,21 +56,51 @@
             <div class="my-3">
                 <p>Userlar ro'yhati</p>
                 <hr/>
-                <div>
-                    <form method="get">
-                        <label>
+                <div class="d-flex">
+                    <div class="p-2 flex-grow-1">
+                        <form method="get" th:action="@{/users}">
+                            <label>
+                                <input
+                                        type="text"
+                                        id="search-users"
+                                        class="my-2"
+                                        style="border-radius: 5px"
+                                        name="searchValue"
+                                        placeholder="Isim,raqam ..."
+                                        th:value="${searchValue}"
+                                >
+                                <input
+                                        type="hidden"
+                                        name="page"
+                                        th:value="${userList.number}"
+                                >
+                                <button class="btn btn-sm btn-secondary">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </label>
+                        </form>
+                    </div>
+
+                    <div class="p-2">
+                        <form method="post" th:action="@{/users/updateStatus}">
                             <input
-                                    type="text"
-                                    id="search-users"
-                                    class="my-2"
-                                    name="searchValue"
-                                    placeholder="Isim,raqam ..."
+                                    type="hidden"
+                                    value="true"
+                                    name="status"
                             >
-                            <button class="btn btn-sm btn-secondary">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </label>
-                    </form>
+                            <button class="btn btn-success">Active all</button>
+                        </form>
+                    </div>
+                    <div class="p-2">
+                        <form method="post" th:action="@{/users/updateStatus}">
+                            <input
+                                    type="hidden"
+                                    value="false"
+                                    name="status"
+                            >
+                            <button class="btn btn-danger">Block all</button>
+                        </form>
+                    </div>
                 </div>
 
                 <table class="table table-hover table-bordered">
@@ -90,8 +120,8 @@
                         <th>Tolov sanasi</th>
                         <th>Actions</th>
                     </tr>
-                    <th:block th:each="user : ${userList}">
-                        <tr>
+                    <th:block th:each="user : ${userList.content}">
+                        <tr th:class="${user.isActive} ? 'table-success' : 'table-warning'">
                             <td>
                                 <input
                                         th:id="${user.userId}"
@@ -107,10 +137,16 @@
                             <td th:text="${user.phone}"></td>
                             <td th:text="${user.paidUntil}"></td>
                             <td>
-                                <form>
+                                <form method="post" th:action="@{/users/updateActive/{userId}(userId=${user.userId})}">
+                                    <input
+                                            type="hidden"
+                                            th:value="!${user.isActive}"
+                                            name="status"
+                                    >
                                     <button class="btn btn-warning"
                                             data-toggle="tooltip"
                                             data-placement="top"
+                                            type="submit"
                                             title="Userni active yoki block qilish"
                                     >
                                         <i class="bi bi-arrow-repeat"></i>
@@ -122,11 +158,32 @@
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Orqaga</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Oldinga</a></li>
+                        <li class="page-item" th:class="${userList.hasPrevious()} ? '' : 'disabled'">
+                            <a class="page-link" th:if="${userList.hasPrevious()}"
+                               th:href="@{/users(page=${userList.previousPageable().pageNumber}, searchValue=${searchValue})}">Orqaga</a>
+                            <span class="page-link" th:if="!${userList.hasPrevious()}">Orqaga</span>
+
+                        </li>
+                        <li class="page-item"
+                            th:if="${userList.totalPages} <= 1"
+                            th:class="${userList.number == i} ? 'active' : ''"
+                            th:each="i : ${#numbers.sequence(0, 0)}"
+                        >
+                            <a class="page-link" th:href="@{/users(page=${i}, searchValue=${searchValue})}"
+                               th:text="${i}+1"></a>
+                        </li>
+                        <li class="page-item" th:if="${userList.totalPages} > 1"
+                            th:class="${userList.number == i} ? 'active' : ''"
+                            th:each="i : ${#numbers.sequence(0, (userList.totalPages)-1)}">
+                            <a class="page-link" th:href="@{/users(page=${i}, searchValue=${searchValue})}"
+                               th:text="${i}+1"></a>
+                        </li>
+                        <li class="page-item" th:class="${userList.hasNext()} ? '' : 'disabled'">
+                            <a class="page-link" th:if="${userList.hasNext()}"
+                               th:href="@{/users(page=${userList.nextPageable().pageNumber}, searchValue=${searchValue})}">Oldinga</a>
+                            <span class="page-link" th:if="!${userList.hasNext()}">Oldinga</span>
+
+                        </li>
                     </ul>
                 </nav>
             </div>

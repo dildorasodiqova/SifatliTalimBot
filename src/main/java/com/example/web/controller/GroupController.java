@@ -4,6 +4,9 @@ import com.example.bot.dto.createDto.GroupCreateDto;
 import com.example.bot.dto.responseDto.GroupResponseDto;
 import com.example.bot.exception.ApiResponse;
 import com.example.web.service.groupServise.GroupService;
+import com.example.web.util.CookieUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,17 +20,24 @@ public class GroupController {
 
     @GetMapping("")
     public String getAllGroups(@RequestParam(name = "page", defaultValue = "0") int page,
-                               @RequestParam(name = "size", defaultValue = "30") int size,
+                               @RequestParam(value = "searchValue", required = false, defaultValue = "") String query,
+                               HttpServletRequest request,
+                               HttpServletResponse response,
                                Model model) {
-        // TODO get All groups by page
+        CookieUtil.setCookieValue("page", request, response, String.valueOf(page));
+        CookieUtil.setCookieValue("searchValue", request, response, query);
+        model.addAttribute("groupList", groupService.getAll(query,page, 30));
+        model.addAttribute("searchValue", query);
+        model.addAttribute("addDTO", new GroupCreateDto());
+
         return "group/index";
     }
 
-    @PostMapping("")
-    public String create(@RequestBody GroupCreateDto dto, Model model) {
+    @PostMapping("/add")
+    public String create(@ModelAttribute GroupCreateDto dto, Model model) {
         ApiResponse<GroupResponseDto> response = groupService.create(dto);
         model.addAttribute("group", response.getData());
-        return "";
+        return "redirect:/groups";
     }
 
     @GetMapping("/byId/{groupId}")

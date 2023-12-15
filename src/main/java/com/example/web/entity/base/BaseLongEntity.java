@@ -16,8 +16,6 @@ public class BaseLongEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Boolean active  = true;
-
     @Column(name = "visible")
     private Boolean visible = Boolean.TRUE;
 

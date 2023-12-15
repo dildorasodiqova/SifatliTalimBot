@@ -1,9 +1,8 @@
 package com.example.web.entity.profile;
 
 import com.example.web.entity.base.BaseLongEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.example.web.enums.ProfileRole;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +20,7 @@ public class ProfileEntity extends BaseLongEntity {
 
     @Column(nullable = false, name = "password")
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private ProfileRole role;
 }

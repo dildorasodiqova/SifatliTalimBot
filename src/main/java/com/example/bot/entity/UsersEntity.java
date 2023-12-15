@@ -1,8 +1,7 @@
 package com.example.bot.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.bot.entity.group.GroupEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +35,12 @@ public class UsersEntity {
     private LocalDateTime createdDate = LocalDateTime.now();
 
     private Boolean isDeleted = false;
+
+    @Column(name = "group_id")
+    private Long groupId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", insertable = false, updatable = false)
+    private GroupEntity group;
 
     public UsersEntity(Long userId, String username, String firstName, String lastName, Boolean isActive) {
         this.userId = userId;

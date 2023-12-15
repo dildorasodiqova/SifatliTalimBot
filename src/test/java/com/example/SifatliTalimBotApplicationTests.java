@@ -54,10 +54,10 @@ class SifatliTalimBotApplicationTests {
 
 
 //        groupService.delete(1L);
-        List<GroupResponseDto> all = groupService.getAll(0, 5);
-        for (GroupResponseDto groupResponseDto : all) {
-            System.err.println(groupResponseDto.getName());
-        }
+//        List<GroupResponseDto> all = groupService.getAll(0, 5);
+//        for (GroupResponseDto groupResponseDto : all) {
+//            System.err.println(groupResponseDto.getName());
+//        }
 
 
 //        ApiResponse<GroupResponseDto> byId = groupService.findById(2L);

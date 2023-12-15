@@ -43,7 +43,7 @@ public class TalimBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         System.out.println(update);
         ApiResponse<UserResponseDto> savedUser = userService.getById(getUserIdByUpdate(update));
-        if (!savedUser.getIsSuccess() && !savedUser.getData().getIsActive()) {
+        if (savedUser.getIsSuccess() && !savedUser.getData().getIsActive()) {
             System.out.println("User non active");
             // send message Siz blocklangansiz
         } else if (update.hasMessage()) {
@@ -51,8 +51,8 @@ public class TalimBot extends TelegramLongPollingBot {
             User user = message.getFrom();
             if (message.hasText()) {
                 userMessageHandler.handleText(message, user);
-            } else if (message.hasPhoto()) {
-
+            } else if (message.hasContact()) {
+                userMessageHandler.handleContact(message,user);
             }
         }
     }
