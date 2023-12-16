@@ -9,6 +9,7 @@ import com.example.bot.entity.interfase.UserOfGroupMapper;
 import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.GroupUsersRepository;
 import com.example.web.dto.responseDto.UserOfGroupMapResponse;
+import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,37 +20,35 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GroupUsersServiceImpl implements GroupUsersService{
+public class GroupUsersServiceImpl implements GroupUsersService {
     private final GroupUsersRepository groupUsersRepository;
     private final UserService userService;
+
     @Override
     public void add(GroupUsersCreateDto dto) {
         GroupUsersEntity save = groupUsersRepository.save(new GroupUsersEntity(dto.getGroupId(), dto.getUserId()));
     }
 
 
-
     @Override
-    public List<UserOfGroupMapResponse> usersOfGroup(Long groupId) {
-        List<UserOfGroupMapResponse> list = new ArrayList<>();
+    public List<UserResponseDto> usersOfGroup(Long groupId) {
+        List<UserResponseDto> list = new ArrayList<>();
         List<UserOfGroupMapper> mapper = groupUsersRepository.mapper(groupId);
-        for (UserOfGroupMapper u: mapper) {
-            list.add(new UserOfGroupMapResponse(u.getUserId(), u.getName(), u.getSurname(), u.getPhoneNumber()));
+        for (UserOfGroupMapper u : mapper) {
+            list.add(new UserResponseDto(u.getUserId(), u.getName(), u.getSurname(), u.getPhoneNumber(), u.getPaidUntil(), u.getIsActive()));
         }
         return list;
     }
 
 
-
-
     @Override
     public String deleteUserOfGroup(Long groupId, Long userId) {
-       groupUsersRepository.deleteUserFromGroup(groupId, userId);
-       return "Successfully deleted";
+        groupUsersRepository.deleteUserFromGroup(groupId, userId);
+        return "Successfully deleted";
     }
 
     private GroupUsersResponseDto parse(GroupUsersEntity entity) {
         Integer counted = groupUsersRepository.countAllByGroupId(entity.getGroupId());
-        return new GroupUsersResponseDto(entity.getGroupId(), entity.getUserId(), entity.getUser().getName() + entity.getUser().getSurname(),counted);
+        return new GroupUsersResponseDto(entity.getGroupId(), entity.getUserId(), entity.getUser().getName() + entity.getUser().getSurname(), counted);
     }
 }

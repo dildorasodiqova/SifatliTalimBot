@@ -20,7 +20,10 @@ public interface GroupUsersRepository extends JpaRepository<GroupUsersEntity, Lo
     void deleteUserFromGroup(@Param("groupId") Long groupId, @Param("userId") Long userId);
 
 
-    @Query("select u.userId as userId, u.name as name , u.surname as surname, u.phone as phoneNumber" +
-            " from GroupUsersEntity gr join UsersEntity u on u.userId = gr.userId  where gr.groupId = :groupId ")
+    @Query("""
+            select u.userId as userId, u.name as name , u.surname as surname, u.phone as phoneNumber,
+            u.paidUntil as paidUntil,u.isActive as isActive
+            from GroupUsersEntity gr join UsersEntity u on u.userId = gr.userId  where gr.groupId = :groupId
+            """)
     List<UserOfGroupMapper> mapper(@Param("groupId") Long groupId);
 }

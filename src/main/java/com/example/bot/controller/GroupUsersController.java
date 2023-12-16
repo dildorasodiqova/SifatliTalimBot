@@ -5,6 +5,7 @@ import com.example.bot.dto.responseDto.GroupUsersResponseDto;
 import com.example.bot.exception.ApiResponse;
 import com.example.bot.service.groupUsersService.GroupUsersService;
 import com.example.web.dto.responseDto.UserOfGroupMapResponse;
+import com.example.web.dto.responseDto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,16 +18,17 @@ import java.util.List;
 @RequestMapping("/users-of-group")
 public class GroupUsersController {
     private final GroupUsersService groupUsersService;
+
     @PostMapping()
-    public String add(@RequestBody GroupUsersCreateDto dto){
-         groupUsersService.add(dto);
-         return "";
+    public String add(@RequestBody GroupUsersCreateDto dto) {
+        groupUsersService.add(dto);
+        return "";
     }
 
 
     @GetMapping("/{groupId}")
-    public String usersOfGroup(@PathVariable Long groupId, Model model){
-        List<UserOfGroupMapResponse> list = groupUsersService.usersOfGroup(groupId);
+    public String usersOfGroup(@PathVariable Long groupId, Model model) {
+        List<UserResponseDto> list = groupUsersService.usersOfGroup(groupId);
         model.addAttribute("groupUsersList", list);
         return "";
     }

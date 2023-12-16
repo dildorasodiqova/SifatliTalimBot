@@ -21,7 +21,7 @@ public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE GroupEntity g SET g.visible = false WHERE g.id = :groupId")
+    @Query("UPDATE GroupEntity  SET visible = false WHERE id = :groupId")
     void delete(@Param("groupId") Long groupId);
 
     @Query("""
