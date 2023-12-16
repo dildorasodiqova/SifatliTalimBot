@@ -16,13 +16,7 @@
     <div class="row flex-nowrap">
         <div class="col-auto sidebar px-0">
             <div id="sidebar" class=" collapse collapse-horizontal show border-end">
-                <a
-                        href=""
-                        class="mx-3 d-flex"
-                        style="text-decoration: none; padding: 10px 0"
-                >
-                    Sifatli ta'lim
-                </a>
+                <a class="mx-3 d-flex" href="#" style="text-decoration: none">Sifatli ta'lim</a>
                 <div id="sidebar-nav" class=" list-group border-0 rounded-0 text-sm-start min-vh-100">
                     <a th:href="@{/dashboard}" href="/dashboard"
                        class="list-group-item border-end-0 d-inline-block text-truncate"
@@ -37,11 +31,25 @@
                         <span>Userlar ro'yhati</span>
                     </a>
                     <a th:href="@{/groups}" href="/groups"
-                       class="list-group-item border-end-0 d-inline-block text-truncate "
+                       class="list-group-item border-end-0 d-inline-block text-truncate"
                        data-bs-parent="#sidebar"
                     >
                         <i class="bi bi-people-fill"></i>
                         <span>Guruhlar ro'yhati</span>
+                    </a>
+                    <a th:href="@{/profile}" href="/profile"
+                       class="list-group-item border-end-0 d-inline-block text-truncate"
+                       data-bs-parent="#sidebar"
+                    >
+                        <i class="bi bi-person-square"></i>
+                        <span>O'qituvchilar</span>
+                    </a>
+                    <a th:href="@{/notification}" href="/notification"
+                       class="list-group-item border-end-0 d-inline-block text-truncate"
+                       data-bs-parent="#sidebar"
+                    >
+                        <i class="bi bi-bell-fill"></i>
+                        <span>Habar yuborish</span>
                     </a>
                 </div>
             </div>

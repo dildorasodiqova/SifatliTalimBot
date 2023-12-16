@@ -1,7 +1,5 @@
 package com.example.web.service.profileService;
 
-import com.example.bot.dto.responseDto.GroupResponseDto;
-import com.example.bot.entity.group.GroupEntity;
 import com.example.bot.exception.ApiResponse;
 import com.example.web.dto.createdDto.ProfileCreatedDto;
 import com.example.web.dto.responseDto.ProfileResponseDto;
@@ -66,6 +64,11 @@ public class ProfileServiceImpl  implements ProfileService{
             Page<ProfileEntity> roadPage = profileRepository.findAllByActiveTrue(query, pageRequest);
         List<ProfileEntity> content = roadPage.getContent();
         return new PageImpl<>(parse(content), pageRequest, roadPage.getTotalElements());
+    }
+
+    @Override
+    public List<ProfileResponseDto> getByRole(ProfileRole profileRole) {
+        return parse(profileRepository.findAllByVisibleIsTrueAndRole(profileRole));
     }
 
     private List<ProfileResponseDto> parse(List<ProfileEntity> profiles) {

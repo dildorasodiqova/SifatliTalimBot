@@ -4,9 +4,12 @@ import com.example.bot.dto.createDto.GroupCreateDto;
 import com.example.bot.dto.responseDto.GroupResponseDto;
 import com.example.bot.exception.ApiResponse;
 import com.example.bot.service.groupUsersService.GroupUsersService;
+import com.example.web.dto.responseDto.ProfileResponseDto;
 import com.example.web.dto.responseDto.UserOfGroupMapResponse;
 import com.example.web.dto.responseDto.UserResponseDto;
+import com.example.web.enums.ProfileRole;
 import com.example.web.service.groupServise.GroupService;
+import com.example.web.service.profileService.ProfileService;
 import com.example.web.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +26,7 @@ import java.util.List;
 public class GroupController {
     private final GroupService groupService;
     private final GroupUsersService groupUsersService;
+    private final ProfileService profileService;
 
     @GetMapping("")
     public String getAllGroups(@RequestParam(name = "page", defaultValue = "0") int page,
@@ -30,11 +34,13 @@ public class GroupController {
                                HttpServletRequest request,
                                HttpServletResponse response,
                                Model model) {
+        List<ProfileResponseDto> teacherList = profileService.getByRole(ProfileRole.ROLE_TEACHER);
         CookieUtil.setCookieValue("page", request, response, String.valueOf(page));
         CookieUtil.setCookieValue("searchValue", request, response, query);
         model.addAttribute("groupList", groupService.getAll(query, page, 30));
         model.addAttribute("searchValue", query);
         model.addAttribute("addDTO", new GroupCreateDto());
+        model.addAttribute("teacherList", teacherList);
 
         return "group/index";
     }
@@ -63,4 +69,12 @@ public class GroupController {
         groupService.delete(groupId);
         return "redirect:/groups?searchValue=%s&page=%d".formatted(searchValue, page);
     }
+
+    @GetMapping("/logout")
+    public String delete(@RequestParam Long groupId,
+                         @RequestParam Long userId) {
+        groupUsersService.deleteUserOfGroup(groupId, userId);
+        return "redirect:/groups/info/%d".formatted(groupId);
+    }
+
 }

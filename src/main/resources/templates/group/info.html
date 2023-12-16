@@ -77,19 +77,24 @@
                                     <td th:text="${user.paidUntil}"></td>
                                     <td>
                                         <form method="post"
-                                              th:action="@{/users/updateActive/{userId}(userId=${user.userId})}">
+                                              th:action="@{/groups/logout}">
                                             <input
                                                     type="hidden"
-                                                    th:value="!${user.isActive}"
-                                                    name="status"
+                                                    th:value="${user.userId}"
+                                                    name="userId"
+                                            >
+                                            <input
+                                                    type="hidden"
+                                                    th:value="${group.groupId}"
+                                                    name="groupId"
                                             >
                                             <button class="btn btn-warning"
                                                     data-toggle="tooltip"
                                                     data-placement="top"
                                                     type="submit"
-                                                    title="Userni active yoki block qilish"
+                                                    title="Userni guruhdan chiqarish"
                                             >
-                                                <i class="bi bi-arrow-repeat"></i>
+                                                <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
                                     </td>
