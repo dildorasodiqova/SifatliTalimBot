@@ -13,6 +13,7 @@ public class GroupResponseDto {
     private Long groupId;
     private String name;
     private String description;
+    private Long teacherId;
     private Integer countOfStudents;
     private LocalDate startDate;
 }

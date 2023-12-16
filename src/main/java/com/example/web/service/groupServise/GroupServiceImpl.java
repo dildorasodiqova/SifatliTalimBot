@@ -69,6 +69,7 @@ public class GroupServiceImpl implements GroupService {
         groupEntity1.setDescription(groupCreateDto.getDescription());
         groupEntity1.setName(groupCreateDto.getName());
         groupEntity1.setStartDate(groupCreateDto.getStartDate());
+        groupEntity1.setTeacherId(groupCreateDto.getTeacherId());
         groupRepository.save(groupEntity1);
         GroupResponseDto parse = parse(groupEntity1);
         return new ApiResponse<>(true, 200, "Successfully", parse);
@@ -102,7 +103,7 @@ public class GroupServiceImpl implements GroupService {
 
     private GroupResponseDto parse(GroupEntity group) {
         Integer counted = groupUsersRepository.countAllByGroupId(group.getId());
-        return new GroupResponseDto(group.getId(), group.getName(), group.getDescription(), counted, group.getStartDate());
+        return new GroupResponseDto(group.getId(), group.getName(), group.getDescription(), group.getTeacherId(), counted, group.getStartDate());
     }
 
     private List<GroupResponseDto> parse(List<GroupEntity> group) {
@@ -110,7 +111,7 @@ public class GroupServiceImpl implements GroupService {
         for (GroupEntity groupEntity : group) {
             Integer counted = groupUsersRepository.countAllByGroupId(groupEntity.getId());
             //  shu yerda image urlni nima qilishim kk
-            list.add(new GroupResponseDto(groupEntity.getId(), groupEntity.getName(), groupEntity.getDescription(), counted, groupEntity.getStartDate()));
+            list.add(new GroupResponseDto(groupEntity.getId(), groupEntity.getName(), groupEntity.getDescription(), groupEntity.getTeacherId(), counted, groupEntity.getStartDate()));
         }
         return list;
     }

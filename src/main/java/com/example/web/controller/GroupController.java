@@ -46,9 +46,12 @@ public class GroupController {
     }
 
     @PostMapping("/add")
-    public String create(@ModelAttribute GroupCreateDto dto, Model model) {
-        ApiResponse<GroupResponseDto> response = groupService.create(dto);
-        model.addAttribute("group", response.getData());
+    public String create(@ModelAttribute GroupCreateDto dto) {
+        if (dto.getIsUpdate()) {
+            groupService.edit(dto, dto.getGroupId());
+        } else {
+            groupService.create(dto);
+        }
         return "redirect:/groups";
     }
 
