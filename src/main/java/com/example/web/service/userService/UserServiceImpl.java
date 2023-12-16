@@ -108,6 +108,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserResponseDto> findAll() {
+        return userRepository.findAllByIsActiveTrue().stream().map(this::parse).toList();
+    }
+
+    @Override
     public UsersEntity saveUserIfNotExists(UsersEntity user) {
         Optional<UsersEntity> byId = userRepository.findById(user.getUserId());
         return byId.orElse(userRepository.save(user));

@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     Boolean existsAllByPhone(String phone);
@@ -35,6 +36,7 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     void updateAllUsersActivity(@Param("isActive") boolean isActive);
 
     Page<UsersEntity> findAllByIsActiveTrue(Pageable pageRequest);
+    List<UsersEntity> findAllByIsActiveTrue();
 
     @Transactional
     @Query("""

@@ -32,4 +32,6 @@ public interface UserService{
     String updatePaidDate(LocalDate localDate, Long userId);
 
     Boolean checkIsActive(Long userId);
+
+    List<UserResponseDto> findAll();
 }
