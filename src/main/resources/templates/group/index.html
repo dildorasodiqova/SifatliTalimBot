@@ -98,6 +98,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
+                        <th>O'qituchi</th>
                         <th>O'quvchilar soni</th>
                         <th>Action</th>
                     </tr>
@@ -108,24 +109,33 @@
                                 <a th:text="${group.name}"
                                    th:href="@{/groups/info/{groupId}(groupId=${group.groupId})}"></a>
                             </td>
+                            <td th:if="${group.teacher == null}"></td>
+                            <td th:if="${group.teacher != null}" th:text="${group.teacher.fullName}"></td>
                             <td th:text="${group.countOfStudents}"></td>
                             <td>
-                                <form method="get" th:action="@{/groups/delete/{groupId}(groupId=${group.groupId})}">
-                                    <button class="btn btn-warning"
-                                            data-toggle="tooltip"
-                                            data-placement="top"
-                                            type="submit"
-                                            title="Guruhni o'chirish uchun"
-                                    >
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                                <button type="button" class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"
-                                        th:data-group-id="${group.groupId}">
-                                    Edit
-                                </button>
+                                <div class="d-flex ">
+                                    <div class="p-2">
+                                        <form method="get"
+                                              th:action="@{/groups/delete/{groupId}(groupId=${group.groupId})}">
+                                            <button class="btn btn-warning"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    type="submit"
+                                                    title="Guruhni o'chirish uchun"
+                                            >
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="p-2">
+                                        <button type="button" class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal"
+                                                th:data-group-id="${group.groupId}">
+                                            Edit
+                                        </button>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </th:block>

@@ -1,5 +1,6 @@
 package com.example.bot.dto.responseDto;
 
+import com.example.web.dto.responseDto.ProfileResponseDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,4 +17,5 @@ public class GroupResponseDto {
     private Long teacherId;
     private Integer countOfStudents;
     private LocalDate startDate;
+    private ProfileResponseDto teacher;
 }
