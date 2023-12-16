@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroupEntity extends BaseLongEntity {
+    private Long teacherId;
     private String name; // group name
     private String description; // some text about this group
     private LocalDate startDate; // start date when start this group

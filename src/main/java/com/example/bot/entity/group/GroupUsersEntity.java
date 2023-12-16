@@ -29,4 +29,9 @@ public class GroupUsersEntity extends BaseStringEntity {
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private UsersEntity user;
+
+    public GroupUsersEntity(Long groupId, Long userId) {
+        this.groupId = groupId;
+        this.userId = userId;
+    }
 }
