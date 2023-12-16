@@ -13,6 +13,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Admin on 15.12.2023
@@ -25,6 +27,7 @@ import java.util.Optional;
 public class NotificationService {
     private final TalimBot telegramBot;
     private final UserService userService;
+    ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public ApiResponse<?> sendNotification(NotificationRequestDTO notificationDTO, Long groupId) {
         List<UserResponseDto> users;
