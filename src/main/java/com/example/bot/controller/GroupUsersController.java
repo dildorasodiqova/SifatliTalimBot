@@ -23,12 +23,6 @@ public class GroupUsersController {
          return "";
     }
 
-    @GetMapping("/by-id/{groupId}")
-    public String getById(@PathVariable Long groupId, Model model){
-        ApiResponse<GroupUsersResponseDto> byId = groupUsersService.getById(groupId);
-        model.addAttribute("groupUsers", byId.getData());
-        return "";
-    }
 
     @GetMapping("/{groupId}")
     public String usersOfGroup(@PathVariable Long groupId, Model model){
