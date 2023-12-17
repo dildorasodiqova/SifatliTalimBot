@@ -135,6 +135,6 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private GroupEntity parse(GroupCreateDto group) {
-        return new GroupEntity(null, group.getTeacherId(), group.getName(), group.getDescription(), group.getStartDate(), false);
+        return new GroupEntity(null, group.getTeacherId(), group.getName(), group.getDescription(), group.getStartDate(), false, 0);
     }
 }
