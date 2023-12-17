@@ -73,17 +73,26 @@
                         </div>
                     </div>
                     <div class="p-2 w-75 ">
-                        <form method="get" th:action="@{/notification}">
-                            <input
-                                    type="hidden"
-                                    name="groupId"
-                                    th:value="${group.groupId}"
-                            >
-                            <button type="submit" class="btn btn-info my-2">
-                                Habar yuborish
-                                <i class="bi bi-bell"></i>
-                            </button>
-                        </form>
+                        <div class="d-flex my-2">
+                            <div class="p-2">
+                                <form method="get" th:action="@{/notification}">
+                                    <input
+                                            type="hidden"
+                                            name="groupId"
+                                            th:value="${group.groupId}"
+                                    >
+                                    <button type="submit" class="btn btn-info">
+                                        Habar yuborish
+                                        <i class="bi bi-bell"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="p-2">
+                                <button class="btn btn-info">
+                                    Darslik qoshish
+                                </button>
+                            </div>
+                        </div>
                         <table class="table table-hover table-bordered">
                             <tr>
                                 <th>Id</th>
