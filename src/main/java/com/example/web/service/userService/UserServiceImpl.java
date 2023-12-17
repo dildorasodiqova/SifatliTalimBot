@@ -3,6 +3,7 @@ package com.example.web.service.userService;
 import com.example.bot.entity.UsersEntity;
 import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.UsersRepository;
+import com.example.bot.repository.manager.UserRepositoryCustom;
 import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.dto.responseDto.UserStatisticsDTO;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UsersRepository userRepository;
+
+    private final UserRepositoryCustom userRepositoryCustom;
 
     @Override
     public PageImpl<UserResponseDto> getAll(Integer page, Integer size, String query) {
@@ -43,18 +47,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserStatisticsDTO> statistic() {
-        List<UserStatisticsDTO> list = new ArrayList<>();
-        for (int i = 30; i >= 0; i--) {
-            LocalDateTime localDateTime = LocalDateTime.now().minusDays(i);
-            int year = localDateTime.getYear();
-            int month = localDateTime.getMonthValue();
-            int day = localDateTime.getDayOfMonth();
-
-            Integer count = userRepository.countAllByCreatedDate(year, month, day);
-            String time = localDateTime.getDayOfMonth() + "/" + localDateTime.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
-            list.add(new UserStatisticsDTO(count.longValue(), time));
-        }
-        return list;
+        return userRepositoryCustom.getUsersCountLast30Days()
+                .stream()
+                .map(item -> {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMMM");
+                    return new UserStatisticsDTO(item.getCount(), item.getDate().format(formatter));
+                })
+                .toList();
     }
 
     @Override

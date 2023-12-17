@@ -16,7 +16,12 @@ import java.util.List;
 public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     Boolean existsAllByPhone(String phone);
 
-    @Query("select COUNT(u) from UsersEntity u where YEAR(u.createdDate) = :year AND MONTH(u.createdDate) = :month AND DAY(u.createdDate) = :day")
+    @Query("""
+            select COUNT(u) from UsersEntity u
+            where YEAR(u.createdDate) = :year
+            AND MONTH(u.createdDate) = :month
+            AND DAY(u.createdDate) = :day and u.isDeleted = false
+            """)
     Integer countAllByCreatedDate(@Param("year") int year, @Param("month") int month, @Param("day") int day);
 
 
@@ -49,7 +54,7 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     Page<UsersEntity> searchUsers(@Param("word") String word, Pageable pageable);
 
 
-    @Query("SELECT u from UsersEntity u ORDER BY u.paidUntil ASC")
+    @Query("SELECT u from UsersEntity u where u.paidUntil is not null ORDER BY u.paidUntil ASC")
     Page<UsersEntity> findAllByPaidUntil(Pageable pageable);
 
     @Transactional
