@@ -16,4 +16,9 @@ public class GroupCreateDto {
     private String name;
     private String description;
     private LocalDate startDate;
+
+    // need
+    private Long groupId;
+    private Boolean isUpdate;
+
 }

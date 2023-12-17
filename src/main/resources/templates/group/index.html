@@ -98,6 +98,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
+                        <th>O'qituchi</th>
                         <th>O'quvchilar soni</th>
                         <th>Action</th>
                     </tr>
@@ -108,18 +109,33 @@
                                 <a th:text="${group.name}"
                                    th:href="@{/groups/info/{groupId}(groupId=${group.groupId})}"></a>
                             </td>
+                            <td th:if="${group.teacher == null}"></td>
+                            <td th:if="${group.teacher != null}" th:text="${group.teacher.fullName}"></td>
                             <td th:text="${group.countOfStudents}"></td>
                             <td>
-                                <form method="get" th:action="@{/groups/delete/{groupId}(groupId=${group.groupId})}">
-                                    <button class="btn btn-warning"
-                                            data-toggle="tooltip"
-                                            data-placement="top"
-                                            type="submit"
-                                            title="Guruhni o'chirish uchun"
-                                    >
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                                <div class="d-flex ">
+                                    <div class="p-2">
+                                        <form method="get"
+                                              th:action="@{/groups/delete/{groupId}(groupId=${group.groupId})}">
+                                            <button class="btn btn-warning"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    type="submit"
+                                                    title="Guruhni o'chirish uchun"
+                                            >
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="p-2">
+                                        <button type="button" class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal"
+                                                th:data-group-id="${group.groupId}">
+                                            Edit
+                                        </button>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </th:block>
@@ -159,7 +175,10 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true"
+    >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -168,6 +187,17 @@
                 </div>
                 <div class="modal-body">
                     <form method="post" th:action="@{/groups/add}" th:object="${addDTO}">
+                        <input type="hidden"
+                               id="groupId"
+                               name="groupId"
+                               th:field="*{groupId}"
+                        >
+                        <input type="hidden"
+                               id="isUpdate"
+                               name="isUpdate"
+                               value="false"
+                               th:field="*{isUpdate}"
+                        >
                         <div class="mb-3">
                             <label for="nameInput" class="form-label">Name</label>
                             <input type="text" name="name"
@@ -201,6 +231,44 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" th:inline="javascript">
+    const groupList = [[${groupList}]] || [];
+    document.getElementById('exampleModal')
+        .addEventListener('show.bs.modal', function (event) {
+            const relatedTarget = event.relatedTarget;
+            const groupId = parseInt(relatedTarget.getAttribute('data-group-id'));
+            console.log(groupId);
+            const descriptionInput = document.getElementById('descriptionInput');
+            const teacherInput = document.getElementById('teacherIdInput');
+            const nameInput = document.getElementById('nameInput');
+            const isUpdateInput = document.getElementById('isUpdate');
+            if (groupId) {
+                document.getElementById('groupId').value = groupId;
+                isUpdateInput.value = 'true';
+                let groupObject = groupList
+                    ?.content
+                    ?.filter(item => item?.groupId === groupId)
+                    ?.map(item => {
+                        return {
+                            id: item.groupId,
+                            name: item.name,
+                            description: item.description,
+                            teacherId: item?.teacherId
+                        }
+                    })[0];
+                descriptionInput.value = groupObject?.description;
+                teacherInput.value = groupObject?.teacherId;
+                nameInput.value = groupObject?.name;
+            } else {
+                descriptionInput.value = '';
+                teacherInput.value = '';
+                isUpdateInput.value = 'false';
+                nameInput.value = '';
+            }
+        });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script src="/static/js/group/script.js" th:src="@{/js/group/script.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -17,4 +17,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class NotificationRequestDTO {
     private String text;
     private MultipartFile media;
+    private Long groupId;
 }

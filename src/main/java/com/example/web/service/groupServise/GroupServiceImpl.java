@@ -6,6 +6,8 @@ import com.example.bot.entity.group.GroupEntity;
 import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.GroupRepository;
 import com.example.bot.repository.GroupUsersRepository;
+import com.example.web.dto.responseDto.ProfileResponseDto;
+import com.example.web.entity.profile.ProfileEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -69,6 +71,7 @@ public class GroupServiceImpl implements GroupService {
         groupEntity1.setDescription(groupCreateDto.getDescription());
         groupEntity1.setName(groupCreateDto.getName());
         groupEntity1.setStartDate(groupCreateDto.getStartDate());
+        groupEntity1.setTeacherId(groupCreateDto.getTeacherId());
         groupRepository.save(groupEntity1);
         GroupResponseDto parse = parse(groupEntity1);
         return new ApiResponse<>(true, 200, "Successfully", parse);
@@ -102,7 +105,7 @@ public class GroupServiceImpl implements GroupService {
 
     private GroupResponseDto parse(GroupEntity group) {
         Integer counted = groupUsersRepository.countAllByGroupId(group.getId());
-        return new GroupResponseDto(group.getId(), group.getName(), group.getDescription(), counted, group.getStartDate());
+        return new GroupResponseDto(group.getId(), group.getName(), group.getDescription(), group.getTeacherId(), counted, group.getStartDate(), null);
     }
 
     private List<GroupResponseDto> parse(List<GroupEntity> group) {
@@ -110,12 +113,23 @@ public class GroupServiceImpl implements GroupService {
         for (GroupEntity groupEntity : group) {
             Integer counted = groupUsersRepository.countAllByGroupId(groupEntity.getId());
             //  shu yerda image urlni nima qilishim kk
-            list.add(new GroupResponseDto(groupEntity.getId(), groupEntity.getName(), groupEntity.getDescription(), counted, groupEntity.getStartDate()));
+            ProfileEntity teacher = groupEntity.getTeacher();
+            list.add(new GroupResponseDto(
+                    groupEntity.getId(),
+                    groupEntity.getName(),
+                    groupEntity.getDescription(),
+                    groupEntity.getTeacherId(),
+                    counted,
+                    groupEntity.getStartDate(),
+                    teacher == null ? null : new ProfileResponseDto(teacher.getId(), teacher.getFullName(),
+                            teacher.getUserName(), null, teacher.getCreatedDate(), teacher.getRole().name()
+                    )
+            ));
         }
         return list;
     }
 
     private GroupEntity parse(GroupCreateDto group) {
-        return new GroupEntity(group.getTeacherId(), group.getName(), group.getDescription(), group.getStartDate(), false);
+        return new GroupEntity(null, group.getTeacherId(), group.getName(), group.getDescription(), group.getStartDate(), false);
     }
 }

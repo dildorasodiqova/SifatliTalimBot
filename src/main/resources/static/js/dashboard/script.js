@@ -46,13 +46,13 @@ const myChart = new Chart(
 );
 
 
-const labels = userStatics?.filter(item => item?.date).map(item => item?.date) || [];
+const labels = userStatics?.map(item => item?.date) || [];
 const data1 = {
     labels: labels,
     datasets: [
         {
             label: 'Userlar',
-            data: userStatics?.filter(item => item?.count).map(item => item?.count)||[],
+            data: userStatics?.map(item => item?.count) || [],
             fill: true,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1

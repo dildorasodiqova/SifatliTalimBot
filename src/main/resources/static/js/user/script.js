@@ -23,7 +23,18 @@ function unCheckAllUsers() {
 
 }
 
+function showEditPaidForm(e) {
+    console.log(e.target.id);
+    document.getElementById('edit-paid-form').style.display = 'block';
+}
 
+document.getElementById('edit-paid2').addEventListener('click', function (event) {
+
+
+    const relatedTarget = event.relatedTarget;
+    const groupId = parseInt(relatedTarget.getAttribute('data-user-id'));
+    console.log(groupId);
+})
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
