@@ -50,6 +50,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<GroupEntity> getAll() {
+        return groupRepository.findAllByVisibleIsTrue();
+    }
+
+    @Override
     public ApiResponse<String> startGroup(Long groupId) {
         Optional<GroupEntity> groupEntity = groupRepository.findById(groupId);
         if (groupEntity.isEmpty()) {

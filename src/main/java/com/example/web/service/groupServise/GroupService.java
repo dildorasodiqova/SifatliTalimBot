@@ -6,6 +6,8 @@ import com.example.bot.entity.group.GroupEntity;
 import com.example.bot.exception.ApiResponse;
 import org.springframework.data.domain.PageImpl;
 
+import java.util.List;
+
 public interface GroupService{
     ApiResponse<GroupResponseDto> create(GroupCreateDto dto);
     ApiResponse<GroupEntity> getById(Long groupId);
@@ -13,6 +15,7 @@ public interface GroupService{
     String delete(Long groupId);
 
     PageImpl<GroupResponseDto> getAll(String query, Integer page, Integer size);
+    List<GroupEntity> getAll();
 
     ApiResponse<String> startGroup(Long groupId);
     ApiResponse<GroupResponseDto> edit(GroupCreateDto groupCreateDto, Long groupId);

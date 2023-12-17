@@ -28,4 +28,5 @@ public class GroupEntity extends BaseLongEntity {
     private String description; // some text about this group
     private LocalDate startDate; // start date when start this group
     private Boolean started = false;
+    private Integer currentOrderNumber = 0; // qaysi darsni yuboryotgani
 }
