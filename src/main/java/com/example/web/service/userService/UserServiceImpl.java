@@ -1,5 +1,6 @@
 package com.example.web.service.userService;
 
+import com.example.bot.TalimBot;
 import com.example.bot.entity.UsersEntity;
 import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.UsersRepository;
@@ -7,16 +8,20 @@ import com.example.bot.repository.manager.UserRepositoryCustom;
 import com.example.web.dto.responseDto.UserResponseDto;
 import com.example.web.dto.responseDto.UserStatisticsDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +34,9 @@ public class UserServiceImpl implements UserService {
     private final UsersRepository userRepository;
 
     private final UserRepositoryCustom userRepositoryCustom;
+    @Lazy
+    @Autowired
+    private TalimBot telegramBot;
 
     @Override
     public PageImpl<UserResponseDto> getAll(Integer page, Integer size, String query) {
@@ -109,6 +117,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDto> findAll() {
         return userRepository.findAllByIsActiveTrue().stream().map(this::parse).toList();
+    }
+
+    @Override
+    public void checkUserPaidDate() {
+        List<UserResponseDto> all = findAll();
+        for (UserResponseDto user : all) {
+            if (user.getPaidUntil() != null) {
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setText("""
+                        Assalomu Aleykum
+                                                
+                        Tolov sanasiga %d kun qoldi!!
+                        Tolov qilishni unutmang.
+                        """);
+                sendMessage.setChatId(user.getUserId());
+                sendMessage.setProtectContent(true);
+                if (LocalDate.now().isBefore(user.getPaidUntil())) {
+                    long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), user.getPaidUntil());
+                    if (daysBetween == 14 || daysBetween == 7 || daysBetween == 3 || daysBetween == 1) {
+                        sendMessage.setText(sendMessage.getText().formatted(daysBetween));
+                        telegramBot.send(sendMessage);
+                    }
+                }
+            }
+        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.example.bot.schedule;
 
+import com.example.web.service.userService.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -10,12 +12,13 @@ import org.springframework.stereotype.Component;
  * @contact @sarvargo
  */
 @Component
+@RequiredArgsConstructor
 public class UserPaidDateCheck {
-
+    private final UserService userService;
     // Run the task every day at 1 AM
     @Scheduled(cron = "0 0 1 * * *")
     public void runDailyTask() {
-        // Your task logic goes here
+        userService.checkUserPaidDate();
         System.out.println("Daily task executed at: " + System.currentTimeMillis());
     }
 }
