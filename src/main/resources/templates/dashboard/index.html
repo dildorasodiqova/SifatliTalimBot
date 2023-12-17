@@ -111,6 +111,7 @@
                         </tr>
                     </th:block>
                 </table>
+
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item" th:class="${noPaidUsers.hasPrevious()} ? '' : 'disabled'">
@@ -118,8 +119,13 @@
                                th:href="@{${url}(page=${noPaidUsers.previousPageable().pageNumber})}">Orqaga</a>
                             <span class="page-link" th:if="!${noPaidUsers.hasPrevious()}">Orqaga</span>
                         </li>
-                        <li class="page-item" th:class="${noPaidUsers.number == i} ? 'active' : ''"
-                            th:each="i : ${#numbers.sequence(0, (noPaidUsers.totalPages))}">
+                        <li class="page-item" th:if="${noPaidUsers.totalPages} <= 1"
+                            th:class="${noPaidUsers.number == i} ? 'active' : ''"
+                            th:each="i : ${#numbers.sequence(0, 0)}">
+                            <a class="page-link" th:href="@{${url}(page=${i})}" th:text="${i}+1"></a>
+                        </li>
+                        <li class="page-item" th:if="${noPaidUsers.totalPages} > 1" th:class="${noPaidUsers.number == i} ? 'active' : ''"
+                            th:each="i : ${#numbers.sequence(0, (noPaidUsers.totalPages)-1)}">
                             <a class="page-link" th:href="@{${url}(page=${i})}" th:text="${i}+1"></a>
                         </li>
                         <li class="page-item" th:class="${noPaidUsers.hasNext()} ? '' : 'disabled'">
