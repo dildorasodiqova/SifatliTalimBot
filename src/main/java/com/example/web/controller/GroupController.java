@@ -1,6 +1,7 @@
 package com.example.web.controller;
 
 import com.example.bot.dto.createDto.GroupCreateDto;
+import com.example.bot.dto.createDto.GroupLessonCreateDto;
 import com.example.bot.dto.responseDto.GroupResponseDto;
 import com.example.bot.exception.ApiResponse;
 import com.example.bot.service.groupUsersService.GroupUsersService;
@@ -62,6 +63,7 @@ public class GroupController {
         List<UserResponseDto> userOfGroupMapResponses = groupUsersService.usersOfGroup(groupId);
         model.addAttribute("group", byId.getData());
         model.addAttribute("userList", userOfGroupMapResponses);
+        model.addAttribute("addGroupLessonDTO",new GroupLessonCreateDto());
         return "group/info";
     }
 

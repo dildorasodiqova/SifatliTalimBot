@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -22,4 +23,6 @@ public class GroupLessonCreateDto {
     private LocalTime sendTime; // 10:00
 
     private DayOfWeek sendDay; // MONDAY
+
+    private MultipartFile file;
 }
