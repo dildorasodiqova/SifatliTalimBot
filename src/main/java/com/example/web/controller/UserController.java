@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -53,6 +54,14 @@ public class UserController {
                                @CookieValue(value = "searchValue", defaultValue = "") String query) {
         Boolean aBoolean = userService.updateActive(trueOrFalse, userId);
         model.addAttribute("update", aBoolean);
+        return "redirect:/users?page=%d&searchValue=%s".formatted(page, query);
+    }
+
+    @PostMapping("/update-paid")
+    public String updatePaid(@RequestParam LocalDate paidUntil, @RequestParam Long userId,
+                             @CookieValue(value = "page", defaultValue = "0") int page,
+                             @CookieValue(value = "searchValue", defaultValue = "") String query) {
+        userService.updatePaidDate(paidUntil, userId);
         return "redirect:/users?page=%d&searchValue=%s".formatted(page, query);
     }
 
