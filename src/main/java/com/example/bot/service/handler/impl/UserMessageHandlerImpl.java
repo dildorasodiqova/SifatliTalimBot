@@ -1,12 +1,14 @@
 package com.example.bot.service.handler.impl;
 
 import com.example.bot.TalimBot;
+import com.example.bot.dto.createDto.GroupUsersCreateDto;
 import com.example.bot.dto.responseDto.GroupResponseDto;
 import com.example.bot.entity.UsersEntity;
 import com.example.bot.enums.UserSteps;
 import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.UsersRepository;
 import com.example.bot.service.UserStatusManage;
+import com.example.bot.service.groupUsersService.GroupUsersService;
 import com.example.bot.service.handler.UserMessageHandler;
 import com.example.bot.util.KeyboardButtonUtil;
 import com.example.bot.util.SendObjects;
@@ -38,6 +40,7 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
     private final UserService userService;
     private final UsersRepository usersRepository;
     private final GroupService groupService;
+    private final GroupUsersService groupUsersService;
 
     @Override
     public void handleText(Message message, User user) {
@@ -78,6 +81,7 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
                                                     
                             Iltimos raqamingizni yuboring!
                             """);
+                    sendMessage.setReplyMarkup(KeyboardButtonUtil.MY_PHONE_BUTTON());
                     UserStatusManage.setStep(user.getId(), UserSteps.ENTERING_PHONE);
                 } else if (Optional.ofNullable(savedUser.getGroupId()).isEmpty()) {
                     sendMessage.setText("""
@@ -90,7 +94,10 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
                     sendMessage.setParseMode(ParseMode.HTML);
                     telegramBot.send(sendMessage);
                     UserStatusManage.setStep(user.getId(), UserSteps.ENTERING_GROUP);
+                }else {
+                    sendMessage.setText("Assalomu Aleykum");
                 }
+
                 telegramBot.send(sendMessage);
             }
             default -> {
@@ -102,6 +109,7 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
                         ApiResponse<GroupResponseDto> groupRes = groupService.findByName(text);
                         if (groupRes.getIsSuccess()) {
                             usersRepository.updateGroup(user.getId(), groupRes.getData().getGroupId());
+                            groupUsersService.add(new GroupUsersCreateDto(user.getId(), groupRes.getData().getGroupId()));
                             sendMessage.setText("Muvaffaqiyatli tanlandi!");
                             telegramBot.send(sendMessage);
                             UserStatusManage.remove(user.getId());

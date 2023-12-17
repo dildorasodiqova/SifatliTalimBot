@@ -25,7 +25,7 @@ public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
     void delete(@Param("groupId") Long groupId);
 
     @Query("""
-            FROM GroupEntity where lower(name) = ?1 and visible = true
+            FROM GroupEntity where lower(name) = lower(?1) and visible = true
             """)
     Optional<GroupEntity> findByName(String text);
 }
