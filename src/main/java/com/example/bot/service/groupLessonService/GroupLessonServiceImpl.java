@@ -5,6 +5,7 @@ import com.example.bot.dto.createDto.GroupLessonCreateDto;
 import com.example.bot.dto.responseDto.GroupLessonResponseDto;
 import com.example.bot.entity.group.GroupEntity;
 import com.example.bot.entity.group.GroupLessonsEntity;
+import com.example.bot.enums.TextType;
 import com.example.bot.exception.ApiResponse;
 import com.example.bot.repository.GroupLessonRepository;
 import com.example.bot.util.MediaUtil;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,9 +29,12 @@ public class GroupLessonServiceImpl implements GroupLessonService {
     @Override
     public GroupLessonResponseDto add(GroupLessonCreateDto dto) {
         GroupLessonsEntity groupLessonsEntity = parse(dto);
+        if (dto.getFile() != null && !dto.getFile().isEmpty()) {
+            String mediaId = getMediaId(dto.getFile());
+            groupLessonsEntity.setMediaId(mediaId);
+            groupLessonsEntity.setMediaType(MediaUtil.detectType(dto.getFile()));
 
-        String mediaId = getMediaId(dto.getFile());
-        groupLessonsEntity.setMediaId(mediaId);
+        }
 
         groupLessonRepository.save(groupLessonsEntity);
         return parse(groupLessonsEntity);
@@ -43,6 +48,11 @@ public class GroupLessonServiceImpl implements GroupLessonService {
                 lessonsEntities.stream().map(this::parse).toList(),
                 pageable, lessonsEntities.getTotalElements()
         );
+    }
+
+    @Override
+    public List<GroupLessonsEntity> getByGroupId(Long groupId, Integer currentOrder) {
+        return groupLessonRepository.findAllByGroupIdAndOrderNumber(groupId, currentOrder);
     }
 
     @SneakyThrows
@@ -64,6 +74,7 @@ public class GroupLessonServiceImpl implements GroupLessonService {
         entity.setSendDay(dto.getSendDay());
         entity.setOrderNumber(dto.getOrderNumber());
         entity.setGroupId(dto.getGroupId());
+        entity.setTextType(TextType.HTML);
         return entity;
     }
 

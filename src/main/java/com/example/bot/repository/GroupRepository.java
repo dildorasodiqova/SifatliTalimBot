@@ -31,4 +31,9 @@ public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
             FROM GroupEntity where lower(name) = lower(?1) and visible = true
             """)
     Optional<GroupEntity> findByName(String text);
+
+    @Query("UPDATE GroupEntity set currentOrderNumber = ?2 where id = ?1")
+    @Transactional
+    @Modifying
+    void updateCurrentOrderNum(Long id, int i);
 }

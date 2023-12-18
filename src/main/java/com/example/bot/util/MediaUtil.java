@@ -1,6 +1,7 @@
 package com.example.bot.util;
 
 import com.example.bot.TalimBot;
+import com.example.bot.enums.LessonMediaType;
 import org.springframework.web.multipart.MultipartFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -48,6 +49,24 @@ public class MediaUtil {
             }
         }
         return "";
+    }
+
+    public static LessonMediaType detectType(MultipartFile file) {
+        String contentType = file.getContentType();
+
+        if (contentType != null) {
+            if (IMAGE_TYPES.contains(contentType)) {
+                return LessonMediaType.PHOTO;
+            } else if (VIDEO_TYPES.contains(contentType)) {
+                return LessonMediaType.VIDEO;
+            } else if (DOC_TYPES.contains(contentType)) {
+                // Handle other file types as needed
+                return LessonMediaType.DOCUMENT;
+            } else if (AUDIO_TYPES.contains(contentType)) {
+                return LessonMediaType.AUDIO;
+            }
+        }
+        return LessonMediaType.MESSAGE;
     }
 
     public static String mediaUpload(MultipartFile file, TalimBot telegramBot, Long devId) throws IOException {

@@ -24,10 +24,12 @@ public class DashboardController {
     private final UserService userService;
 
     @GetMapping("")
-    public String dashboard(@RequestParam(value = "page", defaultValue = "0") int page,Model model) {
+    public String dashboard(@RequestParam(value = "page", defaultValue = "0") int page,
+                            @RequestParam(value = "size", defaultValue = "20") int size,
+                            Model model) {
 
         model.addAttribute("userStatics", userService.statistic());
-        model.addAttribute("noPaidUsers", userService.nonPayingUsers(page, 20));
+        model.addAttribute("noPaidUsers", userService.nonPayingUsers(page, size));
         model.addAttribute("url", "/dashboard");
 
         return "dashboard/index";
