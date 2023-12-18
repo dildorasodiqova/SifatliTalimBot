@@ -224,7 +224,7 @@
                                       rows="3">
                             </textarea>
                         </div>
-                        <button class="btn btn-primary" type="submit">Qo'shish</button>
+                        <button class="btn btn-primary" type="submit" id="submitButton">Qo'shish</button>
                     </form>
                 </div>
             </div>
@@ -242,8 +242,11 @@
             const teacherInput = document.getElementById('teacherIdInput');
             const nameInput = document.getElementById('nameInput');
             const isUpdateInput = document.getElementById('isUpdate');
+            const modalLabel = document.getElementById('exampleModalLabel');
+            const submitButton = document.getElementById('submitButton');
             if (groupId) {
-                document.getElementById('groupId').value = groupId;
+                modalLabel.innerText = "O'zgartirish";
+                submitButton.innerText = "O'zgartirish";
                 isUpdateInput.value = 'true';
                 let groupObject = groupList
                     ?.content
@@ -260,6 +263,8 @@
                 teacherInput.value = groupObject?.teacherId;
                 nameInput.value = groupObject?.name;
             } else {
+                modalLabel.innerText = "Qo'shish";
+                submitButton.innerText = "Qo'shish";
                 descriptionInput.value = '';
                 teacherInput.value = '';
                 isUpdateInput.value = 'false';

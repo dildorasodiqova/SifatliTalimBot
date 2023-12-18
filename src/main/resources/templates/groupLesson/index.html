@@ -62,7 +62,7 @@
             </a>
             <hr/>
             <div class="my-3">
-                <p>Guruhlar ro'yhati</p>
+                <p>Darsliklar ro'yhati</p>
                 <hr/>
                 <div class="d-flex">
                     <div class="p-2">
@@ -92,21 +92,20 @@
                             </td>
                             <td th:text="${lesson.orderNumber}"></td>
                             <td>
-                                <div th:switch="${lesson.mediaType}">
-                                    <span th:case="'PHOTO'">Rasm</span>
-                                    <span th:case="'VIDEO'">Video</span>
-                                    <span th:case="'DOCUMENT'">Document</span>
-                                    <span th:case="'MESSAGE'">Text</span>
-                                    <span th:case="'AUDIO'">Audio</span>
-                                </div>
+                                <span th:if="${lesson.mediaType}=='PHOTO'">Rasm</span>
+                                <span th:if="${lesson.mediaType}=='VIDEO'">Video</span>
+                                <span th:if="${lesson.mediaType}=='DOCUMENT'">Document</span>
+                                <span th:if="${lesson.mediaType}=='MESSAGE'">Text</span>
+                                <span th:if="${lesson.mediaType}=='AUDIO'">Audio</span>
                             </td>
                             <td>
                                 <div class="d-flex ">
                                     <div class="p-2">
                                         <form method="get"
-                                              th:action="@{/groups/delete/{groupId}(groupId=${group.groupId})}"
+                                              th:action="@{/group-lesson/delete}"
                                         >
                                             <input type="hidden" name="groupId" th:value="${group.groupId}">
+                                            <input type="hidden" name="lessonId" th:value="${lesson.id}">
                                             <button class="btn btn-warning"
                                                     data-toggle="tooltip"
                                                     data-placement="top"

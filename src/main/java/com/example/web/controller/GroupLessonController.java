@@ -33,6 +33,12 @@ public class GroupLessonController {
         return "redirect:/group-lesson?groupId=%d".formatted(dto.getGroupId());
     }
 
+    @GetMapping("/delete")
+    public String delete(@RequestParam Long groupId,@RequestParam String lessonId) {
+        groupLessonService.delete(lessonId);
+        return "redirect:/group-lesson?groupId=%d".formatted(groupId);
+    }
+
     @GetMapping("")
     public String getByGroupId(
             @RequestParam Long groupId,
@@ -44,7 +50,9 @@ public class GroupLessonController {
         ApiResponse<GroupResponseDto> group = groupService.findById(groupId);
         model.addAttribute("group", group.getData());
         model.addAttribute("lessonsList", lessons);
-        model.addAttribute("addGroupLessonDTO", new GroupLessonCreateDto());
+        GroupLessonCreateDto lesson = new GroupLessonCreateDto();
+        lesson.setGroupId(groupId);
+        model.addAttribute("addGroupLessonDTO", lesson);
 
         return "groupLesson/index";
     }

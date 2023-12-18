@@ -14,4 +14,6 @@ public interface GroupLessonService {
     PageImpl<GroupLessonResponseDto> getByGroupId(Long groupId, int page, int size);
 
     List<GroupLessonsEntity> getByGroupId(Long groupId, Integer currentOrder);
+
+    void delete(String lessonId);
 }

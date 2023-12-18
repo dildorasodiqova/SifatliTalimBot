@@ -41,7 +41,7 @@ public class ProfileController {
                          HttpServletRequest request,
                          Model model) {
         CookieUtil.setCookieValue("page", request, response, String.valueOf(page));
-        CookieUtil.setCookieValue("searchValue", request, response, String.valueOf(page));
+        CookieUtil.setCookieValue("searchValue", request, response, String.valueOf(query));
         PageImpl<ProfileResponseDto> all = profileService.getAll(query, page, size);
         model.addAttribute("profileList", all);
         model.addAttribute("addDTO", new ProfileCreatedDto());

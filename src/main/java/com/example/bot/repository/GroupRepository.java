@@ -20,7 +20,7 @@ public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
 
     List<GroupEntity> findAllByVisibleIsTrue();
 
-    Boolean existsAllByName(String name);
+    Boolean existsAllByNameAndVisibleIsTrue(String name);
 
     @Modifying
     @Transactional

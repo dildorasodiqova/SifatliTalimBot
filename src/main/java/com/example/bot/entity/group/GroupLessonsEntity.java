@@ -28,7 +28,7 @@ public class GroupLessonsEntity extends BaseStringEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private GroupEntity group;
 
-    @Column(nullable = false)
+    @Column()
     private String mediaId;
 
     @Enumerated(EnumType.STRING)

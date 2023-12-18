@@ -169,6 +169,7 @@
                               th:action="@{/group-lesson}"
                               enctype="multipart/form-data"
                         >
+                            <input type="hidden" name="groupId" th:field="*{groupId}">
                             <div class="mb-3">
                                 <label
                                         for="lessonNumberInput"

@@ -114,7 +114,24 @@
                                     <span th:case="'ROLE_TEACHER'">O'qituvchi</span>
                                 </div>
                             </td>
-                            <td></td>
+                            <td>
+                                <form method="post"
+                                      th:action="@{/profile/delete}">
+                                    <input
+                                            type="hidden"
+                                            th:value="${group.id}"
+                                            name="profileId"
+                                    >
+                                    <button class="btn btn-warning"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            type="submit"
+                                            title="Profilni o'chirish uchun"
+                                    >
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     </th:block>
                 </table>
@@ -144,7 +161,6 @@
                             <a class="page-link" th:if="${profileList.hasNext()}"
                                th:href="@{/profile(page=${profileList.nextPageable().pageNumber}, searchValue=${searchValue})}">Oldinga</a>
                             <span class="page-link" th:if="!${profileList.hasNext()}">Oldinga</span>
-
                         </li>
                     </ul>
                 </nav>

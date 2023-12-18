@@ -63,7 +63,9 @@ public class GroupController {
         List<UserResponseDto> userOfGroupMapResponses = groupUsersService.usersOfGroup(groupId);
         model.addAttribute("group", byId.getData());
         model.addAttribute("userList", userOfGroupMapResponses);
-        model.addAttribute("addGroupLessonDTO",new GroupLessonCreateDto());
+        GroupLessonCreateDto lesson = new GroupLessonCreateDto();
+        lesson.setGroupId(groupId);
+        model.addAttribute("addGroupLessonDTO", lesson);
         return "group/info";
     }
 
