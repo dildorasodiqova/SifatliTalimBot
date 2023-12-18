@@ -1,1 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/quality_education
+    username: for_education
+    password: for_education_pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
+
+telegram:
+  token: 6876695667:AAGAeTELGI7XB9qWh-L1KphAjfcddryHL5M
+  username: sifatli_talim_test_bot
