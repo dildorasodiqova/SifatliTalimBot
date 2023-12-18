@@ -91,6 +91,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>quality_bot</finalName>
     </build>
 
 </project>

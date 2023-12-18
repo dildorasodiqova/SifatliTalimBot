@@ -55,12 +55,19 @@ const data1 = {
             data: userStatics?.map(item => item?.count) || [],
             fill: true,
             borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
+            tension: 1
         }
     ]
 };
 const config1 = {
     type: 'line',
     data: data1,
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
 };
 new Chart(document.getElementById('myChart1'), config1)
