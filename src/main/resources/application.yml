@@ -5,3 +5,9 @@ spring:
     multipart:
       max-file-size: 1000MB
       max-request-size: 1000MB
+  flyway:
+    enabled: false
+    baseline-on-migrate: true
+    baseline-version: 0
+  main:
+    allow-circular-references: true
