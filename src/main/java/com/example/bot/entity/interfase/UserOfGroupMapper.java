@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public interface UserOfGroupMapper {
     Long getUserId();
+
     String getName();
     String getSurname();
     String getPhoneNumber();

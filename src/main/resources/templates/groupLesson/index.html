@@ -62,34 +62,15 @@
             </a>
             <hr/>
             <div class="my-3">
-                <p>Guruhlar ro'yhati</p>
+                <p>Darsliklar ro'yhati</p>
                 <hr/>
                 <div class="d-flex">
-                    <div class="p-2 flex-grow-1">
-                        <form>
-                            <label>
-                                <input
-                                        type="text"
-                                        id="search-users"
-                                        class="my-2"
-                                        name="searchValue"
-                                        th:value="${searchValue}"
-                                        placeholder="Name..."
-                                >
-                                <input
-                                        type="hidden"
-                                        th:value="${groupList.number}"
-                                        name="page"
-                                >
-                                <button type="submit" class="btn btn-sm btn-secondary">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </label>
-                        </form>
-                    </div>
                     <div class="p-2">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">Qo'shish
+                        <button class="btn btn-primary" type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                        >
+                            Darslik qoshish
                         </button>
                     </div>
                 </div>
@@ -97,43 +78,43 @@
                 <table class="table table-hover table-bordered">
                     <tr>
                         <th>Id</th>
-                        <th>Name</th>
-                        <th>O'qituchi</th>
-                        <th>O'quvchilar soni</th>
+                        <th>Guruh</th>
+                        <th>Darslik raqami</th>
+                        <th>Turi</th>
                         <th>Action</th>
                     </tr>
-                    <th:block th:each="group,index:${groupList}">
+                    <th:block th:each="lesson,index:${lessonsList.content}">
                         <tr>
                             <td th:text="${index.index}+1"></td>
                             <td>
                                 <a th:text="${group.name}"
                                    th:href="@{/groups/info/{groupId}(groupId=${group.groupId})}"></a>
                             </td>
-                            <td th:if="${group.teacher == null}"></td>
-                            <td th:if="${group.teacher != null}" th:text="${group.teacher.fullName}"></td>
-                            <td th:text="${group.countOfStudents}"></td>
+                            <td th:text="${lesson.orderNumber}"></td>
+                            <td>
+                                <span th:if="${lesson.mediaType}=='PHOTO'">Rasm</span>
+                                <span th:if="${lesson.mediaType}=='VIDEO'">Video</span>
+                                <span th:if="${lesson.mediaType}=='DOCUMENT'">Document</span>
+                                <span th:if="${lesson.mediaType}=='MESSAGE'">Text</span>
+                                <span th:if="${lesson.mediaType}=='AUDIO'">Audio</span>
+                            </td>
                             <td>
                                 <div class="d-flex ">
                                     <div class="p-2">
                                         <form method="get"
-                                              th:action="@{/groups/delete/{groupId}(groupId=${group.groupId})}">
+                                              th:action="@{/group-lesson/delete}"
+                                        >
+                                            <input type="hidden" name="groupId" th:value="${group.groupId}">
+                                            <input type="hidden" name="lessonId" th:value="${lesson.id}">
                                             <button class="btn btn-warning"
                                                     data-toggle="tooltip"
                                                     data-placement="top"
                                                     type="submit"
-                                                    title="Guruhni o'chirish uchun"
+                                                    title="Darslikni ochirish "
                                             >
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
-                                    </div>
-                                    <div class="p-2">
-                                        <button type="button" class="btn btn-primary"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal"
-                                                th:data-group-id="${group.groupId}">
-                                            Edit
-                                        </button>
                                     </div>
                                 </div>
                             </td>
@@ -142,30 +123,30 @@
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item" th:class="${groupList.hasPrevious()} ? '' : 'disabled'">
-                            <a class="page-link" th:if="${groupList.hasPrevious()}"
-                               th:href="@{/groups(page=${groupList.previousPageable().pageNumber}, searchValue=${searchValue})}">Orqaga</a>
-                            <span class="page-link" th:if="!${groupList.hasPrevious()}">Orqaga</span>
-
+                        <li class="page-item" th:class="${lessonsList.hasPrevious()} ? '' : 'disabled'">
+                            <a class="page-link" th:if="${lessonsList.hasPrevious()}"
+                               th:href="@{/group-lesson(page=${lessonsList.previousPageable().pageNumber})}">Orqaga</a>
+                            <span class="page-link" th:if="!${lessonsList.hasPrevious()}">Orqaga</span>
                         </li>
                         <li class="page-item"
-                            th:if="${groupList.totalPages} <= 1"
-                            th:class="${groupList.number == i} ? 'active' : ''"
+                            th:if="${lessonsList.totalPages} <= 1"
+                            th:class="${lessonsList.number == i} ? 'active' : ''"
                             th:each="i : ${#numbers.sequence(0, 0)}"
                         >
-                            <a class="page-link" th:href="@{/groups(page=${i}, searchValue=${searchValue})}"
+                            <a class="page-link"
+                               th:href="@{/group-lesson(page=${i})}"
                                th:text="${i}+1"></a>
                         </li>
-                        <li class="page-item" th:if="${groupList.totalPages} > 1"
-                            th:class="${groupList.number == i} ? 'active' : ''"
-                            th:each="i : ${#numbers.sequence(0, (groupList.totalPages)-1)}">
-                            <a class="page-link" th:href="@{/groups(page=${i}, searchValue=${searchValue})}"
+                        <li class="page-item" th:if="${lessonsList.totalPages} > 1"
+                            th:class="${lessonsList.number == i} ? 'active' : ''"
+                            th:each="i : ${#numbers.sequence(0, (lessonsList.totalPages)-1)}">
+                            <a class="page-link" th:href="@{/group-lesson(page=${i})}"
                                th:text="${i}+1"></a>
                         </li>
-                        <li class="page-item" th:class="${groupList.hasNext()} ? '' : 'disabled'">
-                            <a class="page-link" th:if="${groupList.hasNext()}"
-                               th:href="@{/groups(page=${groupList.nextPageable().pageNumber}, searchValue=${searchValue})}">Oldinga</a>
-                            <span class="page-link" th:if="!${groupList.hasNext()}">Oldinga</span>
+                        <li class="page-item" th:class="${lessonsList.hasNext()} ? '' : 'disabled'">
+                            <a class="page-link" th:if="${lessonsList.hasNext()}"
+                               th:href="@{/group-lesson(page=${lessonsList.nextPageable().pageNumber})}">Oldinga</a>
+                            <span class="page-link" th:if="!${lessonsList.hasNext()}">Oldinga</span>
 
                         </li>
                     </ul>
@@ -175,99 +156,102 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1"
-         aria-labelledby="exampleModalLabel"
-         aria-hidden="true"
-    >
-        <div class="modal-dialog">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Qo'shish</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Darslik qo'shish</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" th:action="@{/groups/add}" th:object="${addDTO}">
-                        <input type="hidden"
-                               id="groupId"
-                               name="groupId"
-                               th:field="*{groupId}"
+                    <div>
+                        <form method="post"
+                              th:object="${addGroupLessonDTO}"
+                              th:action="@{/group-lesson}"
+                              enctype="multipart/form-data"
                         >
-                        <input type="hidden"
-                               id="isUpdate"
-                               name="isUpdate"
-                               value="false"
-                               th:field="*{isUpdate}"
-                        >
-                        <div class="mb-3">
-                            <label for="nameInput" class="form-label">Name</label>
-                            <input type="text" name="name"
-                                   th:field="*{name}"
-                                   class="form-control" id="nameInput"
-                                   placeholder="Nomini kiriting...">
-                        </div>
+                            <div class="mb-3">
+                                <label
+                                        for="lessonNumberInput"
+                                        class="form-label"
+                                >
+                                    Darslik raqami
+                                </label>
+                                <input type="number"
+                                       placeholder="Darslik raqami.."
+                                       class="form-control"
+                                       id="lessonNumberInput"
+                                       th:field="*{orderNumber}"
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <label
+                                        for="sendTimeInput"
+                                        class="form-label"
+                                >
+                                    Darslik yuborilishi kerak bo'lgan vaqt
+                                </label>
+                                <input type="time"
+                                       placeholder="Darslik vaqti..."
+                                       class="form-control"
+                                       id="sendTimeInput"
+                                       th:field="*{sendTime}"
+                                >
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="teacherIdInput" class="form-label">O'qituvchi</label>
-                            <select th:field="*{teacherId}" id="teacherIdInput" class="form-control" required>
-                                <option th:each="teacher : ${teacherList}"
-                                        th:value="${teacher.id}" th:text="${teacher.fullName}">
-                                </option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="descriptionInput" class="form-label">Description</label>
-                            <textarea name="description"
-                                      placeholder="Description"
-                                      th:field="*{description}"
-                                      class="form-control"
-                                      id="descriptionInput"
-                                      rows="3">
-                            </textarea>
-                        </div>
-                        <button class="btn btn-primary" type="submit">Qo'shish</button>
-                    </form>
+                            <div class="mb-3">
+                                <label
+                                        for="dayOfWeekInput"
+                                        class="form-label"
+                                >
+                                    Darslik yuborilishi kerak bo'lgan kun
+                                </label>
+                                <select id="dayOfWeekInput" th:field="*{sendDay}" class="form-control">
+                                    <option value="MONDAY">Dushanba</option>
+                                    <option value="TUESDAY">Sheshanba</option>
+                                    <option value="WEDNESDAY">Chorshanba</option>
+                                    <option value="THURSDAY">Payshanba</option>
+                                    <option value="FRIDAY">Juma</option>
+                                    <option value="SATURDAY">Shanba</option>
+                                    <option value="SUNDAY">Yakshanba</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label
+                                        for="fileInput"
+                                        class="form-label"
+                                >
+                                    File
+                                </label>
+                                <input type="file"
+                                       class="form-control"
+                                       id="fileInput"
+                                       th:field="*{file}"
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <label
+                                        for="textInput"
+                                        class="form-label"
+                                >
+                                    Text
+                                </label>
+                                <textarea
+                                        rows="8"
+                                        class="form-control"
+                                        id="textInput"
+                                        th:field="*{text}"
+                                ></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Qo'shish</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript" th:inline="javascript">
-    const groupList = [[${groupList}]] || [];
-    document.getElementById('exampleModal')
-        .addEventListener('show.bs.modal', function (event) {
-            const relatedTarget = event.relatedTarget;
-            const groupId = parseInt(relatedTarget.getAttribute('data-group-id'));
-            console.log(groupId);
-            const descriptionInput = document.getElementById('descriptionInput');
-            const teacherInput = document.getElementById('teacherIdInput');
-            const nameInput = document.getElementById('nameInput');
-            const isUpdateInput = document.getElementById('isUpdate');
-            if (groupId) {
-                document.getElementById('groupId').value = groupId;
-                isUpdateInput.value = 'true';
-                let groupObject = groupList
-                    ?.content
-                    ?.filter(item => item?.groupId === groupId)
-                    ?.map(item => {
-                        return {
-                            id: item.groupId,
-                            name: item.name,
-                            description: item.description,
-                            teacherId: item?.teacherId
-                        }
-                    })[0];
-                descriptionInput.value = groupObject?.description;
-                teacherInput.value = groupObject?.teacherId;
-                nameInput.value = groupObject?.name;
-            } else {
-                descriptionInput.value = '';
-                teacherInput.value = '';
-                isUpdateInput.value = 'false';
-                nameInput.value = '';
-            }
-        });
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 
 <script src="/static/js/group/script.js" th:src="@{/js/group/script.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

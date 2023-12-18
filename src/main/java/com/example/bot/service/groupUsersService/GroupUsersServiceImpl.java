@@ -44,6 +44,7 @@ public class GroupUsersServiceImpl implements GroupUsersService {
     @Override
     public String deleteUserOfGroup(Long groupId, Long userId) {
         groupUsersRepository.deleteUserFromGroup(groupId, userId);
+        userService.deleteUserFromGroup(groupId, userId);
         return "Successfully deleted";
     }
 

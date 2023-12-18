@@ -63,7 +63,7 @@
             </a>
             <hr/>
             <div class="my-3">
-                <p>Guruhlar ro'yhati</p>
+                <p>Profillar ro'yhati</p>
                 <hr/>
                 <div class="d-flex">
                     <div class="p-2 flex-grow-1">
@@ -79,7 +79,7 @@
                                 >
                                 <input
                                         type="hidden"
-                                        th:value="${groupList.number}"
+                                        th:value="${profileList.number}"
                                         name="page"
                                 >
                                 <button type="submit" class="btn btn-sm btn-secondary">
@@ -99,45 +99,68 @@
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
-                        <th>O'quvchilar soni</th>
+                        <th>Username</th>
+                        <th>Role</th>
                         <th>Action</th>
                     </tr>
-                    <th:block th:each="group,index:${groupList}">
+                    <th:block th:each="group,index:${profileList.content}">
                         <tr>
                             <td th:text="${index.index}+1"></td>
-                            <td th:text="${group.name}"></td>
-                            <td th:text="${group.countOfStudents}"></td>
-                            <td></td>
+                            <td th:text="${group.fullName}"></td>
+                            <td th:text="${group.login}"></td>
+                            <td>
+                                <div th:switch="${group.role}">
+                                    <span th:case="'ROLE_ADMIN'">Admin</span>
+                                    <span th:case="'ROLE_TEACHER'">O'qituvchi</span>
+                                </div>
+                            </td>
+                            <td>
+                                <form method="post"
+                                      th:action="@{/profile/delete}">
+                                    <input
+                                            type="hidden"
+                                            th:value="${group.id}"
+                                            name="profileId"
+                                    >
+                                    <button class="btn btn-warning"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            type="submit"
+                                            title="Profilni o'chirish uchun"
+                                    >
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     </th:block>
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item" th:class="${groupList.hasPrevious()} ? '' : 'disabled'">
-                            <a class="page-link" th:if="${groupList.hasPrevious()}"
-                               th:href="@{/groups(page=${groupList.previousPageable().pageNumber}, searchValue=${searchValue})}">Orqaga</a>
-                            <span class="page-link" th:if="!${groupList.hasPrevious()}">Orqaga</span>
+                        <li class="page-item" th:class="${profileList.hasPrevious()} ? '' : 'disabled'">
+                            <a class="page-link" th:if="${profileList.hasPrevious()}"
+                               th:href="@{/profile(page=${profileList.previousPageable().pageNumber}, searchValue=${searchValue})}">Orqaga</a>
+                            <span class="page-link" th:if="!${profileList.hasPrevious()}">Orqaga</span>
 
                         </li>
                         <li class="page-item"
-                            th:if="${groupList.totalPages} <= 1"
-                            th:class="${groupList.number == i} ? 'active' : ''"
+                            th:if="${profileList.totalPages} <= 1"
+                            th:class="${profileList.number == i} ? 'active' : ''"
                             th:each="i : ${#numbers.sequence(0, 0)}"
                         >
-                            <a class="page-link" th:href="@{/groups(page=${i}, searchValue=${searchValue})}"
+                            <a class="page-link" th:href="@{/profile(page=${i}, searchValue=${searchValue})}"
                                th:text="${i}+1"></a>
                         </li>
-                        <li class="page-item" th:if="${groupList.totalPages} > 1"
-                            th:class="${groupList.number == i} ? 'active' : ''"
-                            th:each="i : ${#numbers.sequence(0, (groupList.totalPages)-1)}">
-                            <a class="page-link" th:href="@{/groups(page=${i}, searchValue=${searchValue})}"
+                        <li class="page-item" th:if="${profileList.totalPages} > 1"
+                            th:class="${profileList.number == i} ? 'active' : ''"
+                            th:each="i : ${#numbers.sequence(0, (profileList.totalPages)-1)}">
+                            <a class="page-link" th:href="@{/profile(page=${i}, searchValue=${searchValue})}"
                                th:text="${i}+1"></a>
                         </li>
-                        <li class="page-item" th:class="${groupList.hasNext()} ? '' : 'disabled'">
-                            <a class="page-link" th:if="${groupList.hasNext()}"
-                               th:href="@{/groups(page=${groupList.nextPageable().pageNumber}, searchValue=${searchValue})}">Oldinga</a>
-                            <span class="page-link" th:if="!${groupList.hasNext()}">Oldinga</span>
-
+                        <li class="page-item" th:class="${profileList.hasNext()} ? '' : 'disabled'">
+                            <a class="page-link" th:if="${profileList.hasNext()}"
+                               th:href="@{/profile(page=${profileList.nextPageable().pageNumber}, searchValue=${searchValue})}">Oldinga</a>
+                            <span class="page-link" th:if="!${profileList.hasNext()}">Oldinga</span>
                         </li>
                     </ul>
                 </nav>
@@ -162,26 +185,28 @@
                             <input type="text" name="name"
                                    th:field="*{fullName}"
                                    class="form-control" id="nameInput"
-                                   placeholder="Ism kiriting...">
+                                   placeholder="Ism kiriting..." required>
                         </div>
                         <div class="mb-3">
                             <label for="loginInput" class="form-label">Login</label>
                             <input type="text" name="login"
                                    th:field="*{login}"
                                    class="form-control" id="loginInput"
-                                   placeholder="Login kiriting...">
+                                   placeholder="Login kiriting..." required>
                         </div>
                         <div class="mb-3">
                             <label for="passwordInput" class="form-label">Password</label>
                             <input type="password" name="password"
                                    th:field="*{password}"
                                    class="form-control" id="passwordInput"
-                                   placeholder="Parol kiriting...">
+                                   placeholder="Parol kiriting..."
+                                   required
+                            >
                         </div>
                         <div class="mb-3">
                             <label for="roleInput" class="form-label">Role</label>
-                            <select th:field="*{role}" id="roleInput">
-                                <option disabled>Tanlang..</option>
+                            <select th:field="*{role}" id="roleInput" class="form-control" required>
+                                <option selected value="">Tanlang..</option>
                                 <option value="ROLE_TEACHER">O'qituvchi</option>
                                 <option value="ROLE_ADMIN">Admin</option>
                             </select>

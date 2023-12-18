@@ -56,16 +56,18 @@ public class NotificationService {
         }
 
         if (Optional.ofNullable(notificationDTO.getMedia()).isEmpty() || notificationDTO.getMedia().isEmpty()) {
+            System.out.println("keldo");
             Thread thread = new Thread(() -> {
                 SendMessage sendMessage = sendMessage(notificationDTO.getText());
                 for (UserResponseDto user : users) {
                     sendMessage.setChatId(user.getUserId());
                     sendMessage.setText(sendMessage.getText().replace("username", user.getName()));
-                    telegramBot.send(user);
+                    telegramBot.send(sendMessage);
                 }
             });
             thread.start();
         } else {
+            System.out.println("asdasd");
             Thread thread = new Thread(() -> {
                 String mediaId = null;
                 try {
@@ -82,7 +84,7 @@ public class NotificationService {
                                 if (sendPhoto.getCaption() != null) {
                                     sendPhoto.setCaption(sendPhoto.getCaption().replace("username", user.getName()));
                                 }
-                                telegramBot.send(user);
+                                telegramBot.send(sendPhoto);
                             }
                         }
                         case "VIDEO" -> {
@@ -93,7 +95,7 @@ public class NotificationService {
                                 if (sendVideo.getCaption() != null) {
                                     sendVideo.setCaption(sendVideo.getCaption().replace("username", user.getName()));
                                 }
-                                telegramBot.send(user);
+                                telegramBot.send(sendVideo);
                             }
                         }
                         case "DOCUMENT" -> {
@@ -103,7 +105,7 @@ public class NotificationService {
                                 if (sendDocument.getCaption() != null) {
                                     sendDocument.setCaption(sendDocument.getCaption().replace("username", user.getName()));
                                 }
-                                telegramBot.send(user);
+                                telegramBot.send(sendDocument);
                             }
                         }
                     }

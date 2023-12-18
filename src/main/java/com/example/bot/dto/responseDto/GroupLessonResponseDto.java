@@ -17,6 +17,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 public class GroupLessonResponseDto {
+    private String id;
     private Long groupId;
 
     private String mediaId;
@@ -28,4 +29,6 @@ public class GroupLessonResponseDto {
     private LocalTime sendTime; // 10:00
 
     private DayOfWeek sendDay; // MONDAY
+
+    private String mediaType;
 }

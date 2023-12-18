@@ -23,8 +23,9 @@ public class NotificationController {
     @GetMapping("")
     public String notification(@RequestParam(value = "groupId", required = false) Long groupId,
                                Model model) {
-        model.addAttribute("groupId", groupId);
-        model.addAttribute("notificationDTO", new NotificationRequestDTO());
+        NotificationRequestDTO dto = new NotificationRequestDTO();
+        dto.setGroupId(groupId);
+        model.addAttribute("notificationDTO", dto);
         return "notification/index";
     }
 

@@ -37,4 +37,5 @@ public interface UserService{
 
     void checkUserPaidDate();
 
+    void deleteUserFromGroup(Long groupId, Long userId);
 }

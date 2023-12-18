@@ -145,9 +145,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteUserFromGroup(Long groupId, Long userId) {
+        userRepository.deleteUserFromGroup(groupId,userId);
+    }
+
+    @Override
     public UsersEntity saveUserIfNotExists(UsersEntity user) {
         Optional<UsersEntity> byId = userRepository.findById(user.getUserId());
-        return byId.orElse(userRepository.save(user));
+        return byId.orElseGet(() -> userRepository.save(user));
     }
 
     private UserResponseDto parse(UsersEntity entity) {

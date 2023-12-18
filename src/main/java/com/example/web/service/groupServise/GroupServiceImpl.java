@@ -27,7 +27,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ApiResponse<GroupResponseDto> create(GroupCreateDto dto) {
 
-        if (groupRepository.existsAllByName(dto.getName())) {
+        if (groupRepository.existsAllByNameAndVisibleIsTrue(dto.getName())) {
             return new ApiResponse<>(false, 400, "This group name already exists.");
         } else {
             GroupEntity entity = parse(dto);
@@ -71,6 +71,10 @@ public class GroupServiceImpl implements GroupService {
         Optional<GroupEntity> groupEntity = groupRepository.findById(groupId);
         if (groupEntity.isEmpty()) {
             return new ApiResponse<>(false, 400, "Group not found");
+        }
+        Optional<GroupEntity> byName = groupRepository.findByName(groupCreateDto.getName());
+        if (byName.isPresent() && !byName.get().getId().equals(groupId)) {
+            return new ApiResponse<>(false, 400, "This group name already exists.");
         }
         GroupEntity groupEntity1 = groupEntity.get();
         groupEntity1.setDescription(groupCreateDto.getDescription());

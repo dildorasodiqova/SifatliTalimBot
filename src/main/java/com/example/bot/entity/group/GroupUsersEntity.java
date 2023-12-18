@@ -10,7 +10,7 @@ import lombok.Setter;
 
 
 @Entity
-@Table
+@Table(name = "group_user")
 @Getter
 @Setter
 @AllArgsConstructor

@@ -12,6 +12,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.*;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -52,7 +53,7 @@ public class TalimBot extends TelegramLongPollingBot {
             if (message.hasText()) {
                 userMessageHandler.handleText(message, user);
             } else if (message.hasContact()) {
-                userMessageHandler.handleContact(message,user);
+                userMessageHandler.handleContact(message, user);
             }
         }
     }
@@ -93,6 +94,8 @@ public class TalimBot extends TelegramLongPollingBot {
                 return execute((SendSticker) obj);
             } else if (obj instanceof SendPoll) {
                 return execute((SendPoll) obj);
+            } else if (obj instanceof DeleteMessage) {
+                execute((DeleteMessage) obj);
             }
         } catch (TelegramApiException e) {
             System.out.println(e.getMessage());
