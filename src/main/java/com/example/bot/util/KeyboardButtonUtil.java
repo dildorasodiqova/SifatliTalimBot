@@ -15,7 +15,9 @@ import java.util.List;
  */
 public class KeyboardButtonUtil {
     public static KeyboardRow ROW_MY_PHONE() {
-        KeyboardButton MY_LOCATIONS_BUTTON = new KeyboardButton("Telefon raqam yuborish ", true, false, null, null, null, null);
+        KeyboardButton MY_LOCATIONS_BUTTON = new KeyboardButton();
+        MY_LOCATIONS_BUTTON.setText("Telefon raqam yuborish");
+        MY_LOCATIONS_BUTTON.setRequestContact(true);
         return getRow(MY_LOCATIONS_BUTTON);
     }
 

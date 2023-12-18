@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Guruhlar Darslari ro'yhati</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/base.css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto sidebar px-0">
+            <div id="sidebar" class=" collapse collapse-horizontal show border-end">
+                <a class="mx-3 d-flex" href="#" style="text-decoration: none">Sifatli ta'lim</a>
+                <div id="sidebar-nav" class=" list-group border-0 rounded-0 text-sm-start min-vh-100">
+                    <a th:href="@{/dashboard}" href="/dashboard"
+                       class="list-group-item border-end-0 d-inline-block text-truncate"
+                       data-bs-parent="#sidebar">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span>Bosh sahifa</span>
+                    </a>
+                    <a th:href="@{/users}" href="/users"
+                       class="list-group-item border-end-0 d-inline-block text-truncate"
+                       data-bs-parent="#sidebar">
+                        <i class="bi bi-person-square"></i>
+                        <span>Userlar ro'yhati</span>
+                    </a>
+                    <a th:href="@{/groups}" href="/groups"
+                       class="list-group-item border-end-0 d-inline-block text-truncate active"
+                       data-bs-parent="#sidebar"
+                    >
+                        <i class="bi bi-people-fill"></i>
+                        <span>Guruhlar ro'yhati</span>
+                    </a>
+                    <a th:href="@{/profile}" href="/profile"
+                       class="list-group-item border-end-0 d-inline-block text-truncate"
+                       data-bs-parent="#sidebar"
+                    >
+                        <i class="bi bi-person-square"></i>
+                        <span>O'qituvchilar</span>
+                    </a>
+                    <a th:href="@{/notification}" href="/notification"
+                       class="list-group-item border-end-0 d-inline-block text-truncate"
+                       data-bs-parent="#sidebar"
+                    >
+                        <i class="bi bi-bell-fill"></i>
+                        <span>Habar yuborish</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <main class="col ps-md-2 pt-2">
+            <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse"
+               class="border bg-light sidebar rounded-3 p-1 text-decoration-none">
+                <i class="bi bi-list bi-lg py-2 p-1"></i>
+                Menu
+            </a>
+            <hr/>
+            <div class="my-3">
+                <p>Guruhlar ro'yhati</p>
+                <hr/>
+                <div class="d-flex">
+                    <div class="p-2 flex-grow-1">
+                        <form>
+                            <label>
+                                <input
+                                        type="text"
+                                        id="search-users"
+                                        class="my-2"
+                                        name="searchValue"
+                                        th:value="${searchValue}"
+                                        placeholder="Name..."
+                                >
+                                <input
+                                        type="hidden"
+                                        th:value="${groupList.number}"
+                                        name="page"
+                                >
+                                <button type="submit" class="btn btn-sm btn-secondary">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </label>
+                        </form>
+                    </div>
+                    <div class="p-2">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">Qo'shish
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table table-hover table-bordered">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>O'qituchi</th>
+                        <th>O'quvchilar soni</th>
+                        <th>Action</th>
+                    </tr>
+                    <th:block th:each="group,index:${groupList}">
+                        <tr>
+                            <td th:text="${index.index}+1"></td>
+                            <td>
+                                <a th:text="${group.name}"
+                                   th:href="@{/groups/info/{groupId}(groupId=${group.groupId})}"></a>
+                            </td>
+                            <td th:if="${group.teacher == null}"></td>
+                            <td th:if="${group.teacher != null}" th:text="${group.teacher.fullName}"></td>
+                            <td th:text="${group.countOfStudents}"></td>
+                            <td>
+                                <div class="d-flex ">
+                                    <div class="p-2">
+                                        <form method="get"
+                                              th:action="@{/groups/delete/{groupId}(groupId=${group.groupId})}">
+                                            <button class="btn btn-warning"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    type="submit"
+                                                    title="Guruhni o'chirish uchun"
+                                            >
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="p-2">
+                                        <button type="button" class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal"
+                                                th:data-group-id="${group.groupId}">
+                                            Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </th:block>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" th:class="${groupList.hasPrevious()} ? '' : 'disabled'">
+                            <a class="page-link" th:if="${groupList.hasPrevious()}"
+                               th:href="@{/groups(page=${groupList.previousPageable().pageNumber}, searchValue=${searchValue})}">Orqaga</a>
+                            <span class="page-link" th:if="!${groupList.hasPrevious()}">Orqaga</span>
+
+                        </li>
+                        <li class="page-item"
+                            th:if="${groupList.totalPages} <= 1"
+                            th:class="${groupList.number == i} ? 'active' : ''"
+                            th:each="i : ${#numbers.sequence(0, 0)}"
+                        >
+                            <a class="page-link" th:href="@{/groups(page=${i}, searchValue=${searchValue})}"
+                               th:text="${i}+1"></a>
+                        </li>
+                        <li class="page-item" th:if="${groupList.totalPages} > 1"
+                            th:class="${groupList.number == i} ? 'active' : ''"
+                            th:each="i : ${#numbers.sequence(0, (groupList.totalPages)-1)}">
+                            <a class="page-link" th:href="@{/groups(page=${i}, searchValue=${searchValue})}"
+                               th:text="${i}+1"></a>
+                        </li>
+                        <li class="page-item" th:class="${groupList.hasNext()} ? '' : 'disabled'">
+                            <a class="page-link" th:if="${groupList.hasNext()}"
+                               th:href="@{/groups(page=${groupList.nextPageable().pageNumber}, searchValue=${searchValue})}">Oldinga</a>
+                            <span class="page-link" th:if="!${groupList.hasNext()}">Oldinga</span>
+
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Qo'shish</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" th:action="@{/groups/add}" th:object="${addDTO}">
+                        <input type="hidden"
+                               id="groupId"
+                               name="groupId"
+                               th:field="*{groupId}"
+                        >
+                        <input type="hidden"
+                               id="isUpdate"
+                               name="isUpdate"
+                               value="false"
+                               th:field="*{isUpdate}"
+                        >
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label">Name</label>
+                            <input type="text" name="name"
+                                   th:field="*{name}"
+                                   class="form-control" id="nameInput"
+                                   placeholder="Nomini kiriting...">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="teacherIdInput" class="form-label">O'qituvchi</label>
+                            <select th:field="*{teacherId}" id="teacherIdInput" class="form-control" required>
+                                <option th:each="teacher : ${teacherList}"
+                                        th:value="${teacher.id}" th:text="${teacher.fullName}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descriptionInput" class="form-label">Description</label>
+                            <textarea name="description"
+                                      placeholder="Description"
+                                      th:field="*{description}"
+                                      class="form-control"
+                                      id="descriptionInput"
+                                      rows="3">
+                            </textarea>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Qo'shish</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:inline="javascript">
+    const groupList = [[${groupList}]] || [];
+    document.getElementById('exampleModal')
+        .addEventListener('show.bs.modal', function (event) {
+            const relatedTarget = event.relatedTarget;
+            const groupId = parseInt(relatedTarget.getAttribute('data-group-id'));
+            console.log(groupId);
+            const descriptionInput = document.getElementById('descriptionInput');
+            const teacherInput = document.getElementById('teacherIdInput');
+            const nameInput = document.getElementById('nameInput');
+            const isUpdateInput = document.getElementById('isUpdate');
+            if (groupId) {
+                document.getElementById('groupId').value = groupId;
+                isUpdateInput.value = 'true';
+                let groupObject = groupList
+                    ?.content
+                    ?.filter(item => item?.groupId === groupId)
+                    ?.map(item => {
+                        return {
+                            id: item.groupId,
+                            name: item.name,
+                            description: item.description,
+                            teacherId: item?.teacherId
+                        }
+                    })[0];
+                descriptionInput.value = groupObject?.description;
+                teacherInput.value = groupObject?.teacherId;
+                nameInput.value = groupObject?.name;
+            } else {
+                descriptionInput.value = '';
+                teacherInput.value = '';
+                isUpdateInput.value = 'false';
+                nameInput.value = '';
+            }
+        });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script src="/static/js/group/script.js" th:src="@{/js/group/script.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

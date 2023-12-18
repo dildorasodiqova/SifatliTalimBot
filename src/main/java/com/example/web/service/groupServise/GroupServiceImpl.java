@@ -50,6 +50,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<GroupEntity> getAll() {
+        return groupRepository.findAllByVisibleIsTrue();
+    }
+
+    @Override
     public ApiResponse<String> startGroup(Long groupId) {
         Optional<GroupEntity> groupEntity = groupRepository.findById(groupId);
         if (groupEntity.isEmpty()) {
@@ -130,6 +135,6 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private GroupEntity parse(GroupCreateDto group) {
-        return new GroupEntity(null, group.getTeacherId(), group.getName(), group.getDescription(), group.getStartDate(), false);
+        return new GroupEntity(null, group.getTeacherId(), group.getName(), group.getDescription(), group.getStartDate(), false, 0);
     }
 }

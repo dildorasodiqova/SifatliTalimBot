@@ -34,4 +34,7 @@ public interface UserService{
     Boolean checkIsActive(Long userId);
 
     List<UserResponseDto> findAll();
+
+    void checkUserPaidDate();
+
 }

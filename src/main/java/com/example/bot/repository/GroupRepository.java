@@ -10,12 +10,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
 
     @Query("from GroupEntity where lower(name) like concat('%',lower(?1) ,'%') and visible = true ")
     Page<GroupEntity> findAllByActiveTrue(String query, Pageable pageRequest);
+
+    List<GroupEntity> findAllByVisibleIsTrue();
 
     Boolean existsAllByName(String name);
 
@@ -25,7 +28,7 @@ public interface GroupRepository extends JpaRepository<GroupEntity, Long> {
     void delete(@Param("groupId") Long groupId);
 
     @Query("""
-            FROM GroupEntity where lower(name) = ?1 and visible = true
+            FROM GroupEntity where lower(name) = lower(?1) and visible = true
             """)
     Optional<GroupEntity> findByName(String text);
 }
