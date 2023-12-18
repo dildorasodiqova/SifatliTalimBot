@@ -92,9 +92,8 @@ public class UserMessageHandlerImpl implements UserMessageHandler {
                             <b>Iltimos guruhingizni yozing!</b>
                             """);
                     sendMessage.setParseMode(ParseMode.HTML);
-                    telegramBot.send(sendMessage);
                     UserStatusManage.setStep(user.getId(), UserSteps.ENTERING_GROUP);
-                }else {
+                } else {
                     sendMessage.setText("Assalomu Aleykum");
                 }
 

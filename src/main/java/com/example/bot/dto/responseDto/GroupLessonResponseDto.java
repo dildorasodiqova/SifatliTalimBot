@@ -28,4 +28,5 @@ public class GroupLessonResponseDto {
     private LocalTime sendTime; // 10:00
 
     private DayOfWeek sendDay; // MONDAY
+    private LessonMediaType mediaType;
 }

@@ -84,7 +84,9 @@ public class GroupLessonServiceImpl implements GroupLessonService {
                 entity.getText(),
                 entity.getOrderNumber(),
                 entity.getSendTime(),
-                entity.getSendDay());
+                entity.getSendDay(),
+                entity.getMediaType()
+        );
     }
 
 

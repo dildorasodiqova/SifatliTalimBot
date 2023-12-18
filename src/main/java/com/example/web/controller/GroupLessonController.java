@@ -28,10 +28,9 @@ public class GroupLessonController {
     private final GroupService groupService;
 
     @PostMapping("")
-    public String add(@ModelAttribute GroupLessonCreateDto dto,
-                      HttpServletRequest request) {
+    public String add(@ModelAttribute GroupLessonCreateDto dto) {
         groupLessonService.add(dto);
-        return "redirect:%s".formatted(request.getPathInfo());
+        return "redirect:/group-lesson?groupId=%d".formatted(dto.getGroupId());
     }
 
     @GetMapping("")
@@ -45,6 +44,8 @@ public class GroupLessonController {
         ApiResponse<GroupResponseDto> group = groupService.findById(groupId);
         model.addAttribute("group", group.getData());
         model.addAttribute("lessonsList", lessons);
+        model.addAttribute("addGroupLessonDTO", new GroupLessonCreateDto());
+
         return "groupLesson/index";
     }
 }

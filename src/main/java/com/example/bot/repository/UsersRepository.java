@@ -88,4 +88,9 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     @Modifying
     @Transactional
     void updateGroup(Long id, Long groupId);
+
+    @Transactional
+    @Modifying
+    @Query("update UsersEntity set groupId = null where userId = ?2 and groupId = ?1")
+    void deleteUserFromGroup(Long groupId, Long userId);
 }
